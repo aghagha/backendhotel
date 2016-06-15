@@ -24,7 +24,7 @@
 						<li>Price Currency : {{ $hotel->pricecurrency }}</li> 
 						<li>Minimum Sell Price : {{ $hotel->minimumsellprice }}</li>
 						<li>Allotment : {{ $hotel->allotment }}</li>
-						{!! Form::open(array('url' => 'hotel/upload')) !!}
+						{!! Form::open(array('url' => 'hotel/upload', 'method'=>'POST', 'files'=>true)) !!}
 							{{ Form::file('image') }}
 							{{ Form::hidden('hotelid', $hotel->hotelid) }}
 							{{ Form::submit('Upload') }}
