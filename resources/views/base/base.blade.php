@@ -1,0 +1,12 @@
+    <html>
+    <head>
+        <title>@yield('title')</title>
+        @yield('moreStyles')
+    </head>
+    <body>
+        <div>
+            @yield('content')
+        </div>
+        @yield('moreScripts')
+    </body>
+</html>
