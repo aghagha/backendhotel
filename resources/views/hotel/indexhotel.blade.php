@@ -24,7 +24,10 @@
 						<li>Price Currency : {{ $hotel->pricecurrency }}</li> 
 						<li>Minimum Sell Price : {{ $hotel->minimumsellprice }}</li>
 						<li>Allotment : {{ $hotel->allotment }}</li>
-						<a href="{{ route('hotel.edit', ['hotelid'=>$hotel->hotelid]) }}">Edit</a>
+						<a href="{{ route('hotel.edit', ['hotelid'=>$hotel->hotelid, 
+														'hotelname'=>$hotel->hotelname,
+														'city'=>$hotel->city,
+														'website'=>$hotel->website]) }}">Edit</a>
 					</ul>
 					<br>
 				</li>
