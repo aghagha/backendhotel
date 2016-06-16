@@ -4,13 +4,8 @@
 
 @section('content')
 	<div>
-		{!! Form::open(array('url'=>'hotel/search', 'method' => 'POST')) !!}
-			{{ Form::text('keyword', '', array('placeholder'=>'Search..')) }}
-			{{ Form::date('startdate') }}
-			{{ Form::date('enddate') }}
-			{{ Form::submit('Search') }}
-		{!! Form::close() !!}
-		
+		{!! Form::open(array('url'=>'actionhere', 'method' => 'POST')) !!}
+		<h5>{{ $hotels->startdate }} to {{ $hotels->enddate }}, with keyword {{ $parameters['keyword']}} search result.</h5>
 		<ul>
 			<!-- 
 				hotelid, hotelname, address, city, phone, fax, email, star, remarks, website, pricecurrency, minimumsellprice, allotment

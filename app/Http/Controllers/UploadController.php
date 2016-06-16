@@ -1,8 +1,11 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+// use Intervention\Image\ImageManager;
 
 use Session;
 use Input;
@@ -42,7 +45,9 @@ class UploadController extends Controller
 					$fileName = $hotelid.'__'.$originalName;
 				}
 				Input::file('image')->move($destinationPath, $fileName);
-
+				// $manager = new ImageManager(array('driver' => 'imagick' ));
+				// $image = $manager->make($destinationPath.$fileName)->resize(100,150);
+				
 				$image = new Hotelimage();
 				$image->hotelid = $hotelid;
 				$image->image_url = $fileName;

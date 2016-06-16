@@ -157,6 +157,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         'Artisaninweb\SoapWrapper\ServiceProvider',
         'Collective\Html\HtmlServiceProvider',
+        Intervention\Image\ImageServiceProvider::class,
     ],
 
     /*
@@ -206,6 +207,7 @@ return [
         'SoapWrapper' => 'Artisaninweb\SoapWrapper\Facades\SoapWrapper',
         'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 use Artisaninweb\SoapWrapper\Facades\SoapWrapper;
 use Illuminate\Http\Request;
 
+use Session;
+use Input;
+use Validator;
+use Redirect;
+
 use App\Http\Requests;
 
 class SoapController extends Controller
@@ -13,7 +18,8 @@ class SoapController extends Controller
 		$GLOBALS['agentid'] = '3709';
 		$GLOBALS['apikey'] = '343702b1ce99dd8add93d58b4fac4';
 		$GLOBALS['sessionwsdl'] = 'https://b2b.haryonotours.co.id:443/apiv1-dev/index.php/sessionservice?wsdl';
-	
+	    $GLOBALS['servicewsdl'] = 'https://b2b.haryonotours.co.id:443/apiv1-dev/index.php/webservice?wsdl';
+
     	SoapWrapper::add(function ($service) {
             $service
                 ->name('session')
@@ -49,8 +55,7 @@ class SoapController extends Controller
     }    
 
     public function search(){
-    	$GLOBALS['servicewsdl'] = 'https://b2b.haryonotours.co.id:443/apiv1-dev/index.php/webservice?wsdl';
-
+    	
     	SoapWrapper::add(function ($service) {
             $service
                 ->name('mainservice')
@@ -87,6 +92,37 @@ class SoapController extends Controller
 
         $this->logout();
 
-        return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels'], 'parameters'=>$parameters]);
+        return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels']]);
+    }
+
+    public function gethotels(){
+
+        $this->login();
+        $mainservicedata = [
+            'signature' => $GLOBALS['signature'],
+            'agentid'   => $GLOBALS['agentid'],
+            'keyword'   => Input::get('keyword'),
+            'startdate' => Input::get('startdate'),
+            'enddate'   => Input::get('enddate'),
+            'star'      => '',
+            'price'     => '',
+            'foreign'   => '',
+            'page'      => ''
+        ];
+
+        SoapWrapper::add(function ($service) {
+            $service
+                ->name('mainservice')
+                ->wsdl($GLOBALS['servicewsdl'])
+                ->trace(true);
+        });
+
+        SoapWrapper::service('mainservice', function($service) use ($mainservicedata){
+            $GLOBALS['hotels'] = $service->call('search',[$mainservicedata]);
+        });
+
+        $this->logout();
+        
+        return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels'] ]);
     }
 }

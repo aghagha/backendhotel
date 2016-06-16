@@ -15,7 +15,7 @@
 			@endforeach
 
 			@if(Session::has('success'))
-	          {!! Session::get('success') !!}
+	          <br>{!! Session::get('success') !!}
 	        @endif
 			{!! Form::open(array('url' => 'hotel/upload', 'method'=>'POST', 'files'=>true)) !!}
 				<h3>Upload Image of the hotel:</h3>
