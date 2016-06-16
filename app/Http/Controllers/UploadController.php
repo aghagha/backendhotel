@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+use Session;
 use Input;
 use Validator;
 use Redirect;
+
 use App\Http\Requests;
+use App\Hotelimage;
 
 class UploadController extends Controller
 {
@@ -20,23 +24,43 @@ class UploadController extends Controller
 		$validator = Validator::make($file, $rules);
 		if ($validator->fails()) {
 		    // send back to the page with the input data and errors
-		    return Redirect::to('hotel.edit')->withInput()->withErrors($validator);
-		}
-		
-		$destinationPath = 'uploads/';
-		$originalName = Input::file('image')->getClientOriginalName();
-		$extension = Input::file('image')->getClientOriginalExtension();
-
-		if($isThumbnail == 'yes'){
-			$fileName = $hotelid.'__thumbnail'.'.'.$extension;
-		} else {
-			$fileName = $hotelid.'__'.$originalName.'.'.$extension;
-		}
-		Input::file('image')->move($destinationPath, $fileName);
-
-		return Redirect::route('hotel.edit', array('hotelid' => $hotelid,
+		    // return Redirect::ro('hotel.edit')->withInput()->withErrors($validator);
+		    return Redirect::route('hotel.edit', array('hotelid' => $hotelid,
 													'hotelname'=> Input::get('hotelname'),
 													'city'=> Input::get('city'),
-													'website'=> Input::get('website') ));
+													'website'=> Input::get('website')))
+		    										->withErrors($validator);
+		} else {
+			if(Input::file('image')->isValid()){
+				$destinationPath = 'uploads/';
+				$originalName = Input::file('image')->getClientOriginalName();
+				$extension = Input::file('image')->getClientOriginalExtension();
+
+				if($isThumbnail == 'yes'){
+					$fileName = $hotelid.'__thumbnail'.'.jpg';
+				} else {
+					$fileName = $hotelid.'__'.$originalName;
+				}
+				Input::file('image')->move($destinationPath, $fileName);
+
+				$image = new Hotelimage();
+				$image->hotelid = $hotelid;
+				$image->image_url = $fileName;
+				$image->save();
+
+				// var_dump(Input::all());
+				Session::flash('success', 'Upload successfully'); 
+				return Redirect::route('hotel.edit', array('hotelid' => $hotelid,
+															'hotelname'=> Input::get('hotelname'),
+															'city'=> Input::get('city'),
+															'website'=> Input::get('website') ));
+			} else {
+				Session::flash('error', 'uploaded file is not valid');
+				return Redirect::route('hotel.edit', array('hotelid' => $hotelid,
+															'hotelname'=> Input::get('hotelname'),
+															'city'=> Input::get('city'),
+															'website'=> Input::get('website') ));
+			}
+		}
     }
 }
