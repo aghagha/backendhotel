@@ -42,7 +42,7 @@ class SoapController extends Controller
 
         SoapWrapper::service('session', function ($service) use ($data) {
             // $curr_session['signature'] = 
-            var_dump($service->call('logout', [$data]));
+            //var_dump($service->call('logout', [$data]));
         });
 
         return;
@@ -85,7 +85,7 @@ class SoapController extends Controller
         	$GLOBALS['hotels'] = $service->call('search',[$mainservicedata]);
         });
 
-        //$this->logout();
+        $this->logout();
 
         return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels'], 'parameters'=>$parameters]);
     }

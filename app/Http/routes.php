@@ -18,3 +18,4 @@ Route::get('/', function () {
 
 Route::get('search', ['as' => 'search', 'uses' => 'SoapController@search']);
 Route::post('hotel/upload', ['as' => 'upload', 'uses' => 'UploadController@upload']);
+Route::get('hotel/{hotelid}', ['as' => 'hotel.edit', 'uses'=>'HotelController@editHotel']);
