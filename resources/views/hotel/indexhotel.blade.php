@@ -22,6 +22,7 @@
 				@foreach($hotels->hotels as $hotel)
 					<li>{{ $hotel->hotelname }}
 						<ul>
+							<li><img src="{{ URL::to($hotel->image_url) }}"></li>
 							<li>Hotelid : {{ $hotel->hotelid }}</li>
 							<li>City : {{ $hotel->city }}</li>
 							<li>{{ $hotel->address }}</li>

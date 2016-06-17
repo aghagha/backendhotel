@@ -124,6 +124,11 @@ class SoapController extends Controller
 
         $this->logout();
         
+        foreach ($GLOBALS['hotels']->hotels as $hotel ) {
+            $hotel->image_url = '/uploads/'.$hotel->hotelid.'__thumbnail'.'.jpg';
+        }
+
+        // var_dump(json_encode($GLOBALS['hotels']));
         return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels'] ]);
     }
 }
