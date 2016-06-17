@@ -15,29 +15,34 @@
 			<!-- 
 				hotelid, hotelname, address, city, phone, fax, email, star, remarks, website, pricecurrency, minimumsellprice, allotment
 			 -->
-			@foreach($hotels->hotels as $hotel)
-				<li>{{ $hotel->hotelname }}
-					<ul>
-						<li>Hotelid : {{ $hotel->hotelid }}</li>
-						<li>City : {{ $hotel->city }}</li>
-						<li>{{ $hotel->address }}</li>
-						<li>Phone : {{ $hotel->phone }}</li>
-						<li>Fax : {{ $hotel->fax }}</li>
-						<li>Email : {{ $hotel->email }}</li>
-						<li>Star : {{ $hotel->star }}</li>
-						<li>Remarks : {{ $hotel->remarks }}</li>
-						<li>Website : {{ $hotel->website }}</li>
-						<li>Price Currency : {{ $hotel->pricecurrency }}</li> 
-						<li>Minimum Sell Price : {{ $hotel->minimumsellprice }}</li>
-						<li>Allotment : {{ $hotel->allotment }}</li>
-						<a href="{{ route('hotel.edit', ['hotelid'=>$hotel->hotelid, 
-														'hotelname'=>$hotel->hotelname,
-														'city'=>$hotel->city,
-														'website'=>$hotel->website]) }}">Edit</a>
-					</ul>
-					<br>
-				</li>
-			@endforeach
+			@if(Session::has('notfound'))
+	          <br>{!! Session::get('notfound') !!}
+	        @endif
+			@if(@hotels==!null)
+				@foreach($hotels->hotels as $hotel)
+					<li>{{ $hotel->hotelname }}
+						<ul>
+							<li>Hotelid : {{ $hotel->hotelid }}</li>
+							<li>City : {{ $hotel->city }}</li>
+							<li>{{ $hotel->address }}</li>
+							<li>Phone : {{ $hotel->phone }}</li>
+							<li>Fax : {{ $hotel->fax }}</li>
+							<li>Email : {{ $hotel->email }}</li>
+							<li>Star : {{ $hotel->star }}</li>
+							<li>Remarks : {{ $hotel->remarks }}</li>
+							<li>Website : {{ $hotel->website }}</li>
+							<li>Price Currency : {{ $hotel->pricecurrency }}</li> 
+							<li>Minimum Sell Price : {{ $hotel->minimumsellprice }}</li>
+							<li>Allotment : {{ $hotel->allotment }}</li>
+							<a href="{{ route('hotel.edit', ['hotelid'=>$hotel->hotelid, 
+															'hotelname'=>$hotel->hotelname,
+															'city'=>$hotel->city,
+															'website'=>$hotel->website]) }}">Edit</a>
+						</ul>
+						<br>
+					</li>
+				@endforeach
+			@endif
 		</ul>
 	</div>
 @endsection

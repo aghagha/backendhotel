@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Artisaninweb\SoapWrapper\Facades\SoapWrapper;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 use Session;
 use Input;
@@ -54,20 +55,17 @@ class SoapController extends Controller
         return;
     }    
 
-    public function search(){
-    	
+    public function index(){
+    	$this->login();
     	SoapWrapper::add(function ($service) {
             $service
                 ->name('mainservice')
                 ->wsdl($GLOBALS['servicewsdl'])
                 ->trace(true);
         });
-        
-        $this->login();
-        
         $keyword = '';
-        $startdate = '2016-07-01';
-        $enddate = '2016-07-03';
+        $startdate = Carbon::now('Asia/Jakarta')->toDateString();
+        $enddate = Carbon::tomorrow('Asia/Jakarta')->toDateString();
 
         $parameters = array('keyword' => $keyword,
         					'startdate' => $startdate,
@@ -89,9 +87,7 @@ class SoapController extends Controller
         	// var_dump($service->call('search',[$mainservicedata]));
         	$GLOBALS['hotels'] = $service->call('search',[$mainservicedata]);
         });
-
         $this->logout();
-
         return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels']]);
     }
 
@@ -118,7 +114,12 @@ class SoapController extends Controller
         });
 
         SoapWrapper::service('mainservice', function($service) use ($mainservicedata){
-            $GLOBALS['hotels'] = $service->call('search',[$mainservicedata]);
+            try {
+                $GLOBALS['hotels'] = $service->call('search',[$mainservicedata]);   
+            } catch (Exception $e) {
+                Session::flash('notfound', 'hotel not found');
+                return view('hotel.indexhotel');
+            }
         });
 
         $this->logout();

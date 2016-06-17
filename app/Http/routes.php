@@ -16,8 +16,7 @@
 // });
 
 
-Route::get('/', ['as' => 'index', 'uses' => 'SoapController@search']);
-
+Route::get('/', ['as' => 'index', 'uses' => 'SoapController@index']);
 Route::post('hotel/upload', ['as' => 'upload', 'uses' => 'UploadController@upload']);
 Route::get('hotel/{hotelid}/{hotelname}/{city}/{website}', ['as' => 'hotel.edit', 'uses'=>'HotelController@editHotel']);
 Route::post('hotel/search', ['as'=>'search', 'uses' => 'SoapController@gethotels']);
