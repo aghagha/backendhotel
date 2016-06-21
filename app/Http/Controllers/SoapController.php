@@ -87,13 +87,20 @@ class SoapController extends Controller
         	// var_dump($service->call('search',[$mainservicedata]));
         	$GLOBALS['hotels'] = $service->call('search',[$mainservicedata]);
         });
+
+        foreach ($GLOBALS['hotels']->hotels as $hotel ) {
+            $hotel->image_url = '/uploads/'.$hotel->hotelid.'__thumbnail'.'.jpg';
+        }
+
         $this->logout();
+
         return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels']]);
     }
 
     public function gethotels(){
 
         $this->login();
+
         $mainservicedata = [
             'signature' => $GLOBALS['signature'],
             'agentid'   => $GLOBALS['agentid'],
@@ -105,7 +112,7 @@ class SoapController extends Controller
             'foreign'   => '',
             'page'      => ''
         ];
-
+        
         SoapWrapper::add(function ($service) {
             $service
                 ->name('mainservice')
@@ -123,7 +130,7 @@ class SoapController extends Controller
         });
 
         $this->logout();
-        
+
         foreach ($GLOBALS['hotels']->hotels as $hotel ) {
             $hotel->image_url = '/uploads/'.$hotel->hotelid.'__thumbnail'.'.jpg';
         }
