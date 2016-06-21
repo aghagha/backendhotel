@@ -9,6 +9,7 @@ use Session;
 use Input;
 use Validator;
 use Redirect;
+use File;
 
 use App\Http\Requests;
 
@@ -55,7 +56,7 @@ class SoapController extends Controller
         return;
     }    
 
-    public function index(){
+    public function index($keyword = null, $startdate = null, $enddate = null){
     	$this->login();
     	SoapWrapper::add(function ($service) {
             $service
@@ -63,9 +64,13 @@ class SoapController extends Controller
                 ->wsdl($GLOBALS['servicewsdl'])
                 ->trace(true);
         });
-        $keyword = '';
-        $startdate = Carbon::now('Asia/Jakarta')->toDateString();
-        $enddate = Carbon::tomorrow('Asia/Jakarta')->toDateString();
+
+        if(!$keyword)
+            $keyword = '';
+        if(!$startdate)
+            $startdate = Carbon::now('Asia/Jakarta')->toDateString();
+        if(!$enddate)
+            $enddate = Carbon::tomorrow('Asia/Jakarta')->toDateString();
 
         $parameters = array('keyword' => $keyword,
         					'startdate' => $startdate,
@@ -89,7 +94,9 @@ class SoapController extends Controller
         });
 
         foreach ($GLOBALS['hotels']->hotels as $hotel ) {
-            $hotel->image_url = '/uploads/'.$hotel->hotelid.'__thumbnail'.'.jpg';
+            $hotel->thumb = '/uploads/'.$hotel->hotelid.'/thumb/'.$hotel->hotelid.'__thumbnail'.'.jpg';
+            var_dump($hotel->hotelid);// if(File::exists('uploads/'.$hotel->hotelid.'/'))
+            //     $hotel->images = File::files('uploads/'.$hotel->$hotelid.'/');
         }
 
         $this->logout();
@@ -112,7 +119,7 @@ class SoapController extends Controller
             'foreign'   => '',
             'page'      => ''
         ];
-        
+
         SoapWrapper::add(function ($service) {
             $service
                 ->name('mainservice')
@@ -137,5 +144,16 @@ class SoapController extends Controller
 
         // var_dump(json_encode($GLOBALS['hotels']));
         return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels'] ]);
+    }
+
+    public function mobileSearch($keyword = null, $startdate = null, $enddate = null){
+        $this->login();
+        if(!$keyword)
+            $keyword = '';
+        if(!$startdate)
+            $startdate = Carbon::now('Asia/Jakarta')->toDateString();
+        if(!$enddate)
+            $enddate = Carbon::tomorrow('Asia/Jakarta')->toDateString();
+        
     }
 }

@@ -35,12 +35,13 @@ class UploadController extends Controller
 		    										->withErrors($validator);
 		} else {
 			if(Input::file('image')->isValid()){
-				$destinationPath = 'uploads/';
+				$destinationPath = 'uploads/'.$hotelid.'/';
 				$originalName = Input::file('image')->getClientOriginalName();
 				$extension = Input::file('image')->getClientOriginalExtension();
 
 				if($isThumbnail == 'yes'){
 					$fileName = $hotelid.'__thumbnail'.'.jpg';
+					$destinationPath = $destinationPath.'thumb/';
 				} else {
 					$fileName = $hotelid.'__'.$originalName;
 				}
@@ -48,10 +49,10 @@ class UploadController extends Controller
 				// $manager = new ImageManager(array('driver' => 'imagick' ));
 				// $image = $manager->make($destinationPath.$fileName)->resize(100,150);
 				
-				$image = new Hotelimage();
-				$image->hotelid = $hotelid;
-				$image->image_url = $fileName;
-				$image->save();
+				// $image = new Hotelimage();
+				// $image->hotelid = $hotelid;
+				// $image->image_url = $fileName;
+				// $image->save();
 
 				// var_dump(Input::all());
 				Session::flash('success', 'Upload successfully'); 

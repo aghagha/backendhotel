@@ -11,7 +11,7 @@
 			<li>Website : {{ $website }}</li>
 			<!-- Show the images here -->
 			@foreach($images as $image)
-				<img src="{{ URL::to('/uploads/'.$image->image_url) }}">
+				<img src="{{ URL::to($image) }}">
 			@endforeach
 
 			@if(Session::has('success'))

@@ -5,18 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 
-
+use File;
 use App\Hotelimage;
 
 class HotelController extends Controller
 {
     public function editHotel($hotelid, $hotelname, $city, $website){
-    	$images = json_decode($this->getImages($hotelid));
+        $files = File::files('uploads/'.$hotelid.'/');
+        
+    	// $images = json_decode($this->getImages($hotelid));
     	return view('hotel.editHotel', ['hotelid'=>$hotelid,
     									'hotelname'=>$hotelname,
     									'city'=>$city,
     									'website'=>$website])
-    				->with('images', $images);
+    				->with('images', $files);
     }
 
     public function getImages($hotelid){
