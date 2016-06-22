@@ -4,7 +4,6 @@
 
 @section('content')
 	<div>
-		test
 		{!! Form::open(array('url'=>'hotel/search', 'method' => 'POST')) !!}
 			{{ Form::text('keyword', '', array('placeholder'=>'Search..')) }}
 			{{ Form::date('startdate') }}
@@ -21,7 +20,9 @@
 	        @endif
 			@if(@hotels==!null)
 				@foreach($hotels->hotels as $hotel)
-					<li>{{ $hotel->hotelname }}
+					<li><a href="{{ route('hotel.getroom', ['hotelid'	=>$hotel->hotelid,
+															'startdate'	=>$parameters['startdate'],
+															'enddate'	=>$parameters['enddate']]) }}">{{ $hotel->hotelname }}</a>
 						<ul>
 							<li><img src="{{ URL::to($hotel->thumb) }}"></li>
 							<li>Hotelid : {{ $hotel->hotelid }}</li>
@@ -36,10 +37,10 @@
 							<li>Price Currency : {{ $hotel->pricecurrency }}</li> 
 							<li>Minimum Sell Price : {{ $hotel->minimumsellprice }}</li>
 							<li>Allotment : {{ $hotel->allotment }}</li>
-							<a href="{{ route('hotel.edit', ['hotelid'=>$hotel->hotelid, 
-															'hotelname'=>$hotel->hotelname,
-															'city'=>$hotel->city,
-															'website'=>$hotel->website]) }}">Edit</a>
+							<a href="{{ route('hotel.edit', ['hotelid'	=>$hotel->hotelid, 
+															'hotelname'	=>$hotel->hotelname,
+															'city'		=>$hotel->city,
+															'website'	=>$hotel->website]) }}">Edit</a>
 						</ul>
 						<br>
 					</li>

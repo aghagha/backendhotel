@@ -72,9 +72,11 @@ class SoapController extends Controller
         if(!$enddate)
             $enddate = Carbon::tomorrow('Asia/Jakarta')->toDateString();
 
-        $parameters = array('keyword' => $keyword,
-        					'startdate' => $startdate,
-        					'enddate' => $enddate );
+        $parameters = [
+            'keyword' => $keyword,
+            'startdate' => $startdate,
+            'enddate' => $enddate
+        ];
 
         $mainservicedata = [
         	'signature' => $GLOBALS['signature'],
@@ -91,17 +93,25 @@ class SoapController extends Controller
         SoapWrapper::service('mainservice', function($service) use ($mainservicedata){
         	// var_dump($service->call('search',[$mainservicedata]));
         	$GLOBALS['hotels'] = $service->call('search',[$mainservicedata]);
+            // var_dump($service->getFunctions());
         });
 
         foreach ($GLOBALS['hotels']->hotels as $hotel ) {
-            $hotel->thumb = '/uploads/'.$hotel->hotelid.'/thumb/'.$hotel->hotelid.'__thumbnail'.'.jpg';
-            //var_dump($hotel->hotelid);// if(File::exists('uploads/'.$hotel->hotelid.'/'))
-            //     $hotel->images = File::files('uploads/'.$hotel->$hotelid.'/');
+            if(File::exists('uploads/'.$hotel->hotelid.'/thumb/'.$hotel->hotelid.'__thumbnail'.'.jpg')){
+                $hotel->thumb = '/uploads/'.$hotel->hotelid.'/thumb/'.$hotel->hotelid.'__thumbnail'.'.jpg';
+            } else { 
+                $hotel->thumb ='/uploads/No_Image_Available.png';
+            }
+
+            if(File::exists('uploads/'.$hotel->hotelid.'/')){
+                $hotel->images = File::files('uploads/'.$hotel->hotelid.'/');
+            }
+            
         }
 
         $this->logout();
 
-        return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels']]);
+        return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels'], 'parameters'=>$parameters]);
     }
 
     public function gethotels(){
@@ -144,6 +154,33 @@ class SoapController extends Controller
 
         // var_dump(json_encode($GLOBALS['hotels']));
         return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels'] ]);
+    }
+
+    public function getRoomAvailability($hotelid, $startdate, $enddate){
+        $this->login();
+
+        SoapWrapper::add(function ($service) {
+            $service
+                ->name('mainservice')
+                ->wsdl($GLOBALS['servicewsdl'])
+                ->trace(true);
+        });
+
+        $data = [
+            'signature' => $GLOBALS['signature'],
+            'agentid' => $GLOBALS['agentid'],
+            'hotelid' => $hotelid,
+            'startdate' => $startdate,
+            'enddate' => $enddate,
+            'foreign' => ''
+        ];
+
+        SoapWrapper::service('mainservice', function($service) use ($data){
+            // var_dump($service->call('search',[$mainservicedata]));
+            $GLOBALS['rooms'] = $service->call('getroomavailability',[$data]);
+        });
+
+        return view('hotel.hotelRoom',['rooms'=>$GLOBALS['rooms']]);
     }
 
     public function mobileSearch($keyword = null, $startdate = null, $enddate = null){
