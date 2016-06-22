@@ -4,6 +4,7 @@
 
 @section('content')
 	<div>
+		test
 		{!! Form::open(array('url'=>'hotel/search', 'method' => 'POST')) !!}
 			{{ Form::text('keyword', '', array('placeholder'=>'Search..')) }}
 			{{ Form::date('startdate') }}

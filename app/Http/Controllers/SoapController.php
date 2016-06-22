@@ -95,7 +95,7 @@ class SoapController extends Controller
 
         foreach ($GLOBALS['hotels']->hotels as $hotel ) {
             $hotel->thumb = '/uploads/'.$hotel->hotelid.'/thumb/'.$hotel->hotelid.'__thumbnail'.'.jpg';
-            var_dump($hotel->hotelid);// if(File::exists('uploads/'.$hotel->hotelid.'/'))
+            //var_dump($hotel->hotelid);// if(File::exists('uploads/'.$hotel->hotelid.'/'))
             //     $hotel->images = File::files('uploads/'.$hotel->$hotelid.'/');
         }
 
