@@ -16,13 +16,13 @@ use App\Http\Requests;
 class SoapController extends Controller
 {
     public function login(){
-    	$GLOBALS['username'] = 'testcomapi';
-		$GLOBALS['agentid'] = '3709';
-		$GLOBALS['apikey'] = '343702b1ce99dd8add93d58b4fac4';
-		$GLOBALS['sessionwsdl'] = 'https://b2b.haryonotours.co.id:443/apiv1-dev/index.php/sessionservice?wsdl';
-	    $GLOBALS['servicewsdl'] = 'https://b2b.haryonotours.co.id:443/apiv1-dev/index.php/webservice?wsdl';
+        $GLOBALS['username'] = 'testcomapi';
+        $GLOBALS['agentid'] = '3709';
+        $GLOBALS['apikey'] = '343702b1ce99dd8add93d58b4fac4';
+        $GLOBALS['sessionwsdl'] = 'https://b2b.haryonotours.co.id:443/apiv1-dev/index.php/sessionservice?wsdl';
+        $GLOBALS['servicewsdl'] = 'https://b2b.haryonotours.co.id:443/apiv1-dev/index.php/webservice?wsdl';
 
-    	SoapWrapper::add(function ($service) {
+        SoapWrapper::add(function ($service) {
             $service
                 ->name('session')
                 ->wsdl($GLOBALS['sessionwsdl']);
@@ -43,8 +43,8 @@ class SoapController extends Controller
         return;
     }
 
-	public function logout(){
-		$data = [
+    public function logout(){
+        $data = [
             'signature' => $GLOBALS['signature']
         ];
 
@@ -57,8 +57,8 @@ class SoapController extends Controller
     }    
 
     public function index($keyword = null, $startdate = null, $enddate = null){
-    	$this->login();
-    	SoapWrapper::add(function ($service) {
+        $this->login();
+        SoapWrapper::add(function ($service) {
             $service
                 ->name('mainservice')
                 ->wsdl($GLOBALS['servicewsdl'])
@@ -79,32 +79,32 @@ class SoapController extends Controller
         ];
 
         $mainservicedata = [
-        	'signature' => $GLOBALS['signature'],
-        	'agentid'	=> $GLOBALS['agentid'],
-        	'keyword'	=> $keyword,
-        	'startdate'	=> $startdate,
-        	'enddate'	=> $enddate,
-        	'star'		=> '',
-        	'price'		=> '',
-        	'foreign'	=> '',
-        	'page'		=> ''
+            'signature' => $GLOBALS['signature'],
+            'agentid'   => $GLOBALS['agentid'],
+            'keyword'   => $keyword,
+            'startdate' => $startdate,
+            'enddate'   => $enddate,
+            'star'      => '',
+            'price'     => '',
+            'foreign'   => '',
+            'page'      => ''
         ];
 
         SoapWrapper::service('mainservice', function($service) use ($mainservicedata){
-        	// var_dump($service->call('search',[$mainservicedata]));
-        	$GLOBALS['hotels'] = $service->call('search',[$mainservicedata]);
+            // var_dump($service->call('search',[$mainservicedata]));
+            $GLOBALS['hotels'] = $service->call('search',[$mainservicedata]);
             // var_dump($service->getFunctions());
         });
 
         foreach ($GLOBALS['hotels']->hotels as $hotel ) {
-            if(File::exists('uploads/'.$hotel->hotelid.'/thumb/'.$hotel->hotelid.'__thumbnail'.'.jpg')){
-                $hotel->thumb = '/uploads/'.$hotel->hotelid.'/thumb/'.$hotel->hotelid.'__thumbnail'.'.jpg';
+            if(File::exists('public/uploads/'.$hotel->hotelid.'/thumb/'.$hotel->hotelid.'__thumbnail'.'.jpg')){
+                $hotel->thumb = 'public/uploads/'.$hotel->hotelid.'/thumb/'.$hotel->hotelid.'__thumbnail'.'.jpg';
             } else { 
-                $hotel->thumb ='/uploads/No_Image_Available.png';
+                $hotel->thumb ='public/uploads/No_Image_Available.png';
             }
 
-            if(File::exists('uploads/'.$hotel->hotelid.'/')){
-                $hotel->images = File::files('uploads/'.$hotel->hotelid.'/');
+            if(File::exists('public/uploads/'.$hotel->hotelid.'/')){
+                $hotel->images = File::files('public/uploads/'.$hotel->hotelid.'/');
             }
             
         }
@@ -149,7 +149,7 @@ class SoapController extends Controller
         $this->logout();
 
         foreach ($GLOBALS['hotels']->hotels as $hotel ) {
-            $hotel->image_url = '/uploads/'.$hotel->hotelid.'__thumbnail'.'.jpg';
+            $hotel->image_url = 'public/uploads/'.$hotel->hotelid.'__thumbnail'.'.jpg';
         }
 
         // var_dump(json_encode($GLOBALS['hotels']));

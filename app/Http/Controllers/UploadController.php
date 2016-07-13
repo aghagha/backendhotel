@@ -35,7 +35,7 @@ class UploadController extends Controller
 		    										->withErrors($validator);
 		} else {
 			if(Input::file('image')->isValid()){
-				$destinationPath = 'uploads/'.$hotelid.'/';
+				$destinationPath = public_path().'/uploads/'.$hotelid.'/';
 				$originalName = Input::file('image')->getClientOriginalName();
 				$extension = Input::file('image')->getClientOriginalExtension();
 
