@@ -24,6 +24,7 @@ Route::get('mobilesearch/{keyword?}/{stardate?}/{enddate?}', ['as' => 'index', '
 
 Route::post('hotel/upload', ['as' => 'upload', 'uses' => 'UploadController@upload']);
 Route::get('hotel/getroom/{hotelid}/{stardate}/{enddate}', ['as'=> 'hotel.getroom', 'uses'=>'SoapController@getRoomAvailability']);
+Route::post('hotel/sellroom',['as'=>'hotel.sellroom', 'uses'=>'SoapController@sellRoom']);
 Route::get('hotel/edit/{hotelid}/{hotelname}/{city}/{website}', ['as' => 'hotel.edit', 'uses'=>'HotelController@editHotel']);
 Route::post('hotel/search', ['as'=>'search', 'uses' => 'SoapController@gethotels']);
 

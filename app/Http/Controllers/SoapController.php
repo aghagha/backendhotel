@@ -43,6 +43,26 @@ class SoapController extends Controller
         return;
     }
 
+    public function mainService(){
+        $GLOBALS['servicewsdl'] = 'https://b2b.haryonotours.co.id:443/apiv1-dev/index.php/webservice?wsdl';
+
+        SoapWrapper::add(function ($service) {
+            $service
+                ->name('mainservice')
+                ->wsdl($GLOBALS['servicewsdl'])
+                ->trace(true);
+        });
+
+        return;
+    }
+
+    public function declareWebService(){
+        $this->login();
+        $this->mainService();
+
+        return;
+    }
+
     public function logout(){
         $data = [
             'signature' => $GLOBALS['signature']
@@ -57,13 +77,7 @@ class SoapController extends Controller
     }    
 
     public function index($keyword = null, $startdate = null, $enddate = null){
-        $this->login();
-        SoapWrapper::add(function ($service) {
-            $service
-                ->name('mainservice')
-                ->wsdl($GLOBALS['servicewsdl'])
-                ->trace(true);
-        });
+        $this->declareWebService();
 
         if(!$keyword)
             $keyword = '';
@@ -157,14 +171,7 @@ class SoapController extends Controller
     }
 
     public function getRoomAvailability($hotelid, $startdate, $enddate){
-        $this->login();
-
-        SoapWrapper::add(function ($service) {
-            $service
-                ->name('mainservice')
-                ->wsdl($GLOBALS['servicewsdl'])
-                ->trace(true);
-        });
+        $this->declareWebService();
 
         $data = [
             'signature' => $GLOBALS['signature'],
@@ -180,8 +187,50 @@ class SoapController extends Controller
             $GLOBALS['rooms'] = $service->call('getroomavailability',[$data]);
         });
 
-        return view('hotel.hotelRoom',['rooms'=>$GLOBALS['rooms']]);
+        return view('hotel.hotelRoom',['rooms'=>$GLOBALS['rooms'],
+                                        'signature'=>$GLOBALS['signature'],
+                                        'agentid'=>$GLOBALS['agentid']]);
     }
+
+    public function sellRoom(){
+        $this->mainService();
+        // var_dump(Input::all());
+
+        $signature = Input::get('signature');
+        $agentid = Input::get('agentid');
+
+        $roomsellcode = Input::get('roomsellcode');
+        $breakdownroomsellcode = explode('~', $roomsellcode);
+        $hotelid = $breakdownroomsellcode[0];
+
+        $date = $breakdownroomsellcode[2];
+        $breakdowndate = explode(':', $date);
+        $startdate = $breakdowndate[0];
+        $enddate = $breakdowndate[1];
+
+        $quantity = Input::get('quantity');
+
+        $roomsellkeys = array(0 => array('sellkey' => $roomsellcode,
+                                         'quantity' => $quantity ) );
+
+
+        $data = [
+            'signature' => $signature,
+            'agentid' => $agentid,
+            'hotelid' => $hotelid,
+            'startdate' => $startdate,
+            'enddate' => $enddate,
+            'foreign' => '',
+            'roomsellkeys' => $roomsellkeys,
+            'quantity' => $quantity
+        ];
+
+        SoapWrapper::service('mainservice', function($service) use ($data){
+            $GLOBALS['output'] = $service->call('sellroom', [$data]);
+        });
+
+        var_dump($GLOBALS['output']);
+    }   
 
     public function mobileSearch($keyword = null, $startdate = null, $enddate = null){
         $this->login();
