@@ -125,12 +125,20 @@ class SoapController extends Controller
 
         $this->logout();
 
-        return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels'], 'parameters'=>$parameters]);
+        return view('hotel.listHotel', ['hotels'=>$GLOBALS['hotels'], 'parameters'=>$parameters]);
     }
 
     public function gethotels(){
 
         $this->login();
+
+        $parameters = [
+            'keyword'   => Input::get('keyword'),
+            'startdate' => Input::get('startdate'),
+            'enddate'   => Input::get('enddate')
+        ];
+
+        var_dump($parameters);
 
         $mainservicedata = [
             'signature' => $GLOBALS['signature'],
@@ -163,11 +171,20 @@ class SoapController extends Controller
         $this->logout();
 
         foreach ($GLOBALS['hotels']->hotels as $hotel ) {
-            $hotel->image_url = 'public/uploads/'.$hotel->hotelid.'__thumbnail'.'.jpg';
+            if(File::exists('public/uploads/'.$hotel->hotelid.'/thumb/'.$hotel->hotelid.'__thumbnail'.'.jpg')){
+                $hotel->thumb = 'public/uploads/'.$hotel->hotelid.'/thumb/'.$hotel->hotelid.'__thumbnail'.'.jpg';
+            } else { 
+                $hotel->thumb ='public/uploads/No_Image_Available.png';
+            }
+
+            if(File::exists('public/uploads/'.$hotel->hotelid.'/')){
+                $hotel->images = File::files('public/uploads/'.$hotel->hotelid.'/');
+            }
+            
         }
 
         // var_dump(json_encode($GLOBALS['hotels']));
-        return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels'] ]);
+        //return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels'], 'parameters'=>$parameters ]);
     }
 
     public function getRoomAvailability($hotelid, $startdate, $enddate){

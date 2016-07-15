@@ -1,6 +1,7 @@
     <html>
     <head>
         <title>@yield('title')</title>
+        @extends('base.style')
         @yield('moreStyles')
     </head>
     <body>

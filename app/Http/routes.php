@@ -11,16 +11,18 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('hotel.indexhotel');
-// });
+Route::get('/index', function () {
+    return view('hotel.index');
+});
+
+Route::get('/list', ['as'=>'list', 'uses' => 'SoapController@index']);
 
 // Route::get('/',function(){
 // 	return 'Haryono';
 // });
 Route::get('/', ['as' => 'index', 'uses' => 'SoapController@index']);
 
-Route::get('mobilesearch/{keyword?}/{stardate?}/{enddate?}', ['as' => 'index', 'uses' => 'SoapController@index']);
+Route::get('mobilesearch/{keyword?}/{stardate?}/{enddate?}', ['as' => 'mobile.index', 'uses' => 'SoapController@index']);
 
 Route::post('hotel/upload', ['as' => 'upload', 'uses' => 'UploadController@upload']);
 Route::get('hotel/getroom/{hotelid}/{stardate}/{enddate}', ['as'=> 'hotel.getroom', 'uses'=>'SoapController@getRoomAvailability']);
