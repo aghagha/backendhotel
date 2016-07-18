@@ -14,7 +14,7 @@
         <ul>
           <li><a href=" {{ route('hotel.list') }} ">List Hotel</a></li>
           <li><a href="widgets2.html">Edit Hotel</a></li>
-          <li><a href="{{ route('hotel.entrigambar') }}">Entri Gambar</a></li>
+          <li><a href="">Entri Gambar</a></li>
           <li><a href="widgets3.html">Entri Link Travel Advisor Hotel</a></li>
           <li><a href="widgets3.html">Manajemen Harga</a></li>
         </ul>

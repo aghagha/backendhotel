@@ -94,7 +94,7 @@
                             </div>
                             <div class="form-group">
                               <div id="datetimepicker1" class="input-append input-group dtpicker">
-                                {{ Form::text('startdate', '', array('data-format' => 'yyyy-MM-dd','class'=>'form-control')) }}
+                                {{ Form::text('startdate', '', array('data-format' => 'yyyy-MM-dd','class'=>'form-control', 'placeholder'=>'enddate')) }}
                                 <span class="input-group-addon add-on">
                                   <i data-time-icon="fa fa-times" data-date-icon="fa fa-calendar"></i>
                                 </span>
@@ -136,10 +136,10 @@
                           <td> {{$hotel->phone}} </td>
                           <td> {{$hotel->website}} </td>
                           <td><button class="btn btn-xs btn-warning"><a href="#myModal{{$hotel->hotelid}}" data-toggle="modal"><i class="fa fa-pencil"style="text-decoration:none"></i></a> </button></td>
-                          <td><button class="btb btn-xs btn"></button><a href="{{ route('hotel.entriimages', ['hotelid'  =>$hotel->hotelid, 
+                          <td><button class="btb btn-xs btn"><a href="{{ route('hotel.images', ['hotelid'  =>$hotel->hotelid, 
                                                                                                         'hotelname' =>$hotel->hotelname,
                                                                                                         'city'    =>$hotel->city,
-                                                                                                        'website' =>$hotel->website]) }}"><i class="fa fa-pencil"></td></a>
+                                                                                                        'website' =>$hotel->website]) }}"><i class="fa fa-camera"></a></button></td>
                     <!-- Modal -->
                           <div id="myModal{{$hotel->hotelid}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">

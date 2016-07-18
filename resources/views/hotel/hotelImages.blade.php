@@ -70,16 +70,18 @@
                 <div class="widget-content">
                   <div class="padd">
                     <div class="row">
-                      <div class="col-md-2">
+                      <div class="col-md-3">
                         <div class="gallery"><a href="{{URL::to($thumb)}}" class="prettyPhoto[pp_gal]"><img src="{{URL::to($thumb)}}" alt=""></a>  </div>
                       </div>
-                      <div class="col-md-10">
-                        <h3>Nama Hotel</h3>
+                      <div class="col-md-9">
+                        <h3>{{$hotelname}}</h3>
                         <h4>Upload gambar hotel</h4>
                         {!! Form::open(array('url' => 'hotel/upload', 'method'=>'POST', 'files'=>true)) !!}
                           {{ Form::file('image','', array('class'=>'form-control-file')) }}
-                          
-                          
+                          {{ Form::hidden('hotelid', $hotelid) }}
+                          {{ Form::hidden('hotelname', $hotelname) }}
+                          {{ Form::hidden('city', $city) }}
+                          {{ Form::hidden('website', $website) }}
                           {{ Form::checkbox('thumbnail', 'yes') }}Save as hotel's thumbnail<br>
                           {{ Form::submit('Upload') }}
                         {!! Form::close() !!}

@@ -27,7 +27,7 @@ class UploadController extends Controller
 		if ($validator->fails()) {
 		    // send back to the page with the input data and errors
 		    // return Redirect::ro('hotel.edit')->withInput()->withErrors($validator);
-		    return Redirect::route('hotel.entriimages', array('hotelid' => $hotelid,
+		    return Redirect::route('hotel.images', array('hotelid' => $hotelid,
 													'hotelname'=> Input::get('hotelname'),
 													'city'=> Input::get('city'),
 													'website'=> Input::get('website')))
@@ -45,23 +45,17 @@ class UploadController extends Controller
 					$fileName = $hotelid.'__'.$originalName;
 				}
 				Input::file('image')->move($destinationPath, $fileName);
-				// $manager = new ImageManager(array('driver' => 'imagick' ));
-				// $image = $manager->make($destinationPath.$fileName)->resize(100,150);
-				
-				// $image = new Hotelimage();
-				// $image->hotelid = $hotelid;
-				// $image->image_url = $fileName;
-				// $image->save();
 
 				// var_dump(Input::all());
-				Session::flash('success', 'Upload successfully'); 
-				return Redirect::route('hotel.entriimages', array('hotelid' => $hotelid,
+				Session::flash('success', 'Upload successfully');
+				// return Redirect::route('index');
+				return Redirect::route('hotel.images', array('hotelid' => $hotelid,
 															'hotelname'=> Input::get('hotelname'),
 															'city'=> Input::get('city'),
 															'website'=> Input::get('website') ));
 			} else {
 				Session::flash('error', 'uploaded file is not valid');
-				return Redirect::route('hotel.entriimages', array('hotelid' => $hotelid,
+				return Redirect::route('hotel.images', array('hotelid' => $hotelid,
 															'hotelname'=> Input::get('hotelname'),
 															'city'=> Input::get('city'),
 															'website'=> Input::get('website') ));
