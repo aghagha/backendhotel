@@ -94,7 +94,7 @@
                             </div>
                             <div class="form-group">
                               <div id="datetimepicker1" class="input-append input-group dtpicker">
-                                {{ Form::text('startdate', '', array('data-format' => 'yyyy-MM-dd','class'=>'form-control', 'placeholder'=>'enddate')) }}
+                                {{ Form::text('startdate', '', array('data-format' => 'yyyy-MM-dd','class'=>'form-control', 'placeholder'=>'Start date')) }}
                                 <span class="input-group-addon add-on">
                                   <i data-time-icon="fa fa-times" data-date-icon="fa fa-calendar"></i>
                                 </span>
@@ -102,7 +102,7 @@
                             </div>
                             <div class="form-group">
                               <div id="datetimepicker2" class="input-append input-group dtpicker">
-                                {{ Form::text('enddate', '', array('data-format' => 'yyyy-MM-dd','class'=>'form-control', 'placeholder'=>'enddate')) }}
+                                {{ Form::text('enddate', '', array('data-format' => 'yyyy-MM-dd','class'=>'form-control', 'placeholder'=>'End date')) }}
                                 <span class="input-group-addon add-on">
                                   <i data-time-con="fa fa-times" data-date-icon="fa fa-calendar"></i>
                                 </span>

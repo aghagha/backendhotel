@@ -118,7 +118,7 @@ class SoapController extends Controller
             }
 
             if(File::exists('public/uploads/'.$hotel->hotelid.'/')){
-                $hotel->images = File::files('public/uploads/'.$hotel->hotelid.'/');
+                $hotel->images = File::files('public/uploads/'.$hotel->hotelid);
             }
             
         }
@@ -128,7 +128,7 @@ class SoapController extends Controller
         return view('hotel.listHotel', ['hotels'=>$GLOBALS['hotels'], 'parameters'=>$parameters]);
     }
 
-    public function gethotels(){
+    public function gethotelsbase(){
 
         $this->login();
 
@@ -137,8 +137,6 @@ class SoapController extends Controller
             'startdate' => Input::get('startdate'),
             'enddate'   => Input::get('enddate')
         ];
-
-        var_dump($parameters);
 
         $mainservicedata = [
             'signature' => $GLOBALS['signature'],
@@ -178,13 +176,27 @@ class SoapController extends Controller
             }
 
             if(File::exists('public/uploads/'.$hotel->hotelid.'/')){
-                $hotel->images = File::files('public/uploads/'.$hotel->hotelid.'/');
+                $hotel->images = File::files('public/uploads/'.$hotel->hotelid);
             }
             
         }
 
         // var_dump(json_encode($GLOBALS['hotels']));
-        return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels'], 'parameters'=>$parameters ]);
+        return $parameters;
+    }
+    
+    public function gethotels(){
+        $parameters = $this->gethotelsbase();
+        
+        return view('hotel.listHotel', ['hotels'=>$GLOBALS['hotels'], 'parameters'=>$parameters ]);
+    }
+
+    public function gethotelsmobile(){
+        $parameters = $this->gethotelsbase();
+
+        $outputs['hotels']=$GLOBALS['hotels'];
+        $outputs['parameters']=$parameters;
+        return json_encode($outputs);
     }
 
     public function getRoomAvailability($hotelid, $startdate, $enddate){
@@ -259,4 +271,6 @@ class SoapController extends Controller
             $enddate = Carbon::tomorrow('Asia/Jakarta')->toDateString();
         
     }
+
+
 }

@@ -20,7 +20,6 @@ class HotelController extends Controller
             $thumb ='public/uploads/No_Image_Available.png';
         }
 
-    	// $images = json_decode($this->getImages($hotelid));
     	return view('hotel.hotelImages', ['hotelid'=>$hotelid,
     									'hotelname'=>$hotelname,
     									'city'=>$city,
