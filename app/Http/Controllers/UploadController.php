@@ -19,7 +19,6 @@ class UploadController extends Controller
 {
     public function upload(){
     	$file = array('image' => Input::file('image'));
-    	var_dump(Input::all());
     	$hotelid = Input::get('hotelid');
     	$isThumbnail = Input::get('thumbnail');
     	$rules = array('image' => 'required',); //mimes:jpeg,bmp,png and for max size max:10000
@@ -28,7 +27,7 @@ class UploadController extends Controller
 		if ($validator->fails()) {
 		    // send back to the page with the input data and errors
 		    // return Redirect::ro('hotel.edit')->withInput()->withErrors($validator);
-		    return Redirect::route('hotel.edit', array('hotelid' => $hotelid,
+		    return Redirect::route('hotel.entriimages', array('hotelid' => $hotelid,
 													'hotelname'=> Input::get('hotelname'),
 													'city'=> Input::get('city'),
 													'website'=> Input::get('website')))
@@ -56,13 +55,13 @@ class UploadController extends Controller
 
 				// var_dump(Input::all());
 				Session::flash('success', 'Upload successfully'); 
-				return Redirect::route('hotel.edit', array('hotelid' => $hotelid,
+				return Redirect::route('hotel.entriimages', array('hotelid' => $hotelid,
 															'hotelname'=> Input::get('hotelname'),
 															'city'=> Input::get('city'),
 															'website'=> Input::get('website') ));
 			} else {
 				Session::flash('error', 'uploaded file is not valid');
-				return Redirect::route('hotel.edit', array('hotelid' => $hotelid,
+				return Redirect::route('hotel.entriimages', array('hotelid' => $hotelid,
 															'hotelname'=> Input::get('hotelname'),
 															'city'=> Input::get('city'),
 															'website'=> Input::get('website') ));

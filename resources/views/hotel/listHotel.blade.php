@@ -84,24 +84,31 @@
                 </div>
                 <div class="widget-content">
                   <div class="container">
+                    <br>
                     <div class="row">
                       <div class="col-md-12">
                         <div>
-                          {!! Form::open(array('url'=>'hotel/search', 'method' => 'POST')) !!}
-                            {{ Form::text('keyword', '', array('placeholder'=>'Search..')) }}
-                            <div id="datetimepicker1" class="input-append input-group dtpicker">
-                              {{ Form::text('startdate', '', array('data-format' => 'yyyy-MM-dd','class'=>'form-control')) }}
-                              <span class="input-group-addon add-on">
-                                <i data-time-icon="fa fa-times" data-date-icon="fa fa-calendar"></i>
-                              </span>
+                          {!! Form::open(array('url'=>'hotel/search', 'method' => 'POST', 'class'=>'form-inline')) !!}
+                            <div class="form-group">
+                              {{ Form::text('keyword', '', array('placeholder'=>'Search..', 'class'=>'form-control')) }}  
                             </div>
-                            <div id="datetimepicker4" class="input-append input-group dtpicker">
-                              {{ Form::text('enddate', '', array('data-format' => 'yyyy-MM-dd','class'=>'form-control')) }}
-                              <span class="input-group-addon add-on">
-                                <i data-date-icon="fa fa-calendar"></i>
-                              </span>
+                            <div class="form-group">
+                              <div id="datetimepicker1" class="input-append input-group dtpicker">
+                                {{ Form::text('startdate', '', array('data-format' => 'yyyy-MM-dd','class'=>'form-control')) }}
+                                <span class="input-group-addon add-on">
+                                  <i data-time-icon="fa fa-times" data-date-icon="fa fa-calendar"></i>
+                                </span>
+                              </div>  
                             </div>
-                            {{ Form::submit('Search') }}
+                            <div class="form-group">
+                              <div id="datetimepicker2" class="input-append input-group dtpicker">
+                                {{ Form::text('enddate', '', array('data-format' => 'yyyy-MM-dd','class'=>'form-control', 'placeholder'=>'enddate')) }}
+                                <span class="input-group-addon add-on">
+                                  <i data-time-con="fa fa-times" data-date-icon="fa fa-calendar"></i>
+                                </span>
+                              </div>
+                            </div>
+                            {{ Form::submit('Search',array('class'=>'btn btn-primary')) }}
                           {!! Form::close() !!}
                         </div>
                       </div>
@@ -110,25 +117,29 @@
 
                   <table class="table table-striped table-bordered table-hover">
                     <thead>
-                      <th>Gambar</th>
+                      <th></th>
                       <th>Nama</th>
                       <th>Kota</th>
                       <th>Alamat</th>
                       <th>Telepon</th>
                       <th>Website</th>
                       <th>Detail</th>
+                      <th>Entri</th>
                     </thead>
                     <tbody>
                       @foreach($hotels->hotels as $hotel)
                         <tr>
-                          <td><img src="{{ URL::to('public/uploads/No_Image_Available.png') }}" class="img-thumbnail" width="100" height="100"></td>
+                          <td><img src="{{ URL::to($hotel->thumb) }}" class="img-thumbnail" width="100" height="100"></td>
                           <td> {{$hotel->hotelname}} </td>
                           <td> {{$hotel->city}} </td>
                           <td> {{$hotel->address}} </td>
                           <td> {{$hotel->phone}} </td>
                           <td> {{$hotel->website}} </td>
-                          <td><button class="btn btn-xs btn-warning"><a href="#myModal{{$hotel->hotelid}}" data-toggle="modal"><i class="fa fa-pencil"></i></a> </button></td>
-                     
+                          <td><button class="btn btn-xs btn-warning"><a href="#myModal{{$hotel->hotelid}}" data-toggle="modal"><i class="fa fa-pencil"style="text-decoration:none"></i></a> </button></td>
+                          <td><button class="btb btn-xs btn"></button><a href="{{ route('hotel.entriimages', ['hotelid'  =>$hotel->hotelid, 
+                                                                                                        'hotelname' =>$hotel->hotelname,
+                                                                                                        'city'    =>$hotel->city,
+                                                                                                        'website' =>$hotel->website]) }}"><i class="fa fa-pencil"></td></a>
                     <!-- Modal -->
                           <div id="myModal{{$hotel->hotelid}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">

@@ -6,15 +6,15 @@
     <!-- If the main navigation has sub navigation, then add the class "has_sub" to "li" of main navigation. -->
     <ul id="nav">
       <!-- Main menu with font awesome icon -->
-      <li class="<?php if($now == 'index') echo 'open'; ?> "><a href="index.html"><i class="fa fa-home"></i> Dashboard</a>
+      <li class="<?php if($now == 'index') echo 'open'; ?> "><a href="{{ route('index') }}"><i class="fa fa-home"></i> Dashboard</a>
        
       </li>
       <li class="has_sub <?php if($now == 'hotel') echo 'open'; ?>">
         <a href="#"><i class="fa fa-list-alt"></i> Manajemen Hotel  <span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
         <ul>
-          <li><a href=" {{ route('list') }} ">List Hotel</a></li>
+          <li><a href=" {{ route('hotel.list') }} ">List Hotel</a></li>
           <li><a href="widgets2.html">Edit Hotel</a></li>
-          <li><a href="widgets3.html">Entri Gambar</a></li>
+          <li><a href="{{ route('hotel.entrigambar') }}">Entri Gambar</a></li>
           <li><a href="widgets3.html">Entri Link Travel Advisor Hotel</a></li>
           <li><a href="widgets3.html">Manajemen Harga</a></li>
         </ul>

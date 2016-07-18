@@ -11,11 +11,17 @@
 |
 */
 
-Route::get('/index', function () {
+Route::get('index', function () {
     return view('hotel.index');
 });
 
-Route::get('/list', ['as'=>'list', 'uses' => 'SoapController@index']);
+Route::get('list', ['as'=>'hotel.list', 'uses' => 'SoapController@index']);
+Route::get('hotel/images/{hotelid}/{hotelname}/{city}/{website}', ['as' => 'hotel.entriimages', 'uses'=>'HotelController@editHotel']);
+// Route::get('images', function(){
+// 	return view('hotel.hotelImages');
+// });
+
+Route::get('entri/gambar', ['as'=>'hotel.entrigambar', 'uses' => 'SoapController@index']);
 
 // Route::get('/',function(){
 // 	return 'Haryono';
@@ -27,6 +33,6 @@ Route::get('mobilesearch/{keyword?}/{stardate?}/{enddate?}', ['as' => 'mobile.in
 Route::post('hotel/upload', ['as' => 'upload', 'uses' => 'UploadController@upload']);
 Route::get('hotel/getroom/{hotelid}/{stardate}/{enddate}', ['as'=> 'hotel.getroom', 'uses'=>'SoapController@getRoomAvailability']);
 Route::post('hotel/sellroom',['as'=>'hotel.sellroom', 'uses'=>'SoapController@sellRoom']);
-Route::get('hotel/edit/{hotelid}/{hotelname}/{city}/{website}', ['as' => 'hotel.edit', 'uses'=>'HotelController@editHotel']);
+
 Route::post('hotel/search', ['as'=>'search', 'uses' => 'SoapController@gethotels']);
 

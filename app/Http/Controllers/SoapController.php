@@ -184,7 +184,7 @@ class SoapController extends Controller
         }
 
         // var_dump(json_encode($GLOBALS['hotels']));
-        //return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels'], 'parameters'=>$parameters ]);
+        return view('hotel.indexhotel', ['hotels'=>$GLOBALS['hotels'], 'parameters'=>$parameters ]);
     }
 
     public function getRoomAvailability($hotelid, $startdate, $enddate){

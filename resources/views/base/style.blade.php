@@ -1,5 +1,5 @@
 <!-- Stylesheets -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="{{URL::asset('css/bootstrap.min.css')}}" rel="stylesheet">
   <!-- Font awesome icon -->
   <link rel="stylesheet" href="{{ URL::asset('css/font-awesome.min.css') }} "> 
   <!-- jQuery UI -->

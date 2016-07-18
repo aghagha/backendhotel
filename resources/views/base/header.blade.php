@@ -6,7 +6,7 @@
         <div class="col-md-4" style="padding: 0; margin: 0; ">
           <!-- Logo. -->
           <div class="logo" style="padding: 0; margin: 0;">
-              <img  src="img/logoadmin.png" />
+              <img  src="{{URL::asset('img/logoadmin.png')}}" />
           </div>
           <!-- Logo ends -->
         </div>

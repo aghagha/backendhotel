@@ -11,14 +11,21 @@ use App\Hotelimage;
 class HotelController extends Controller
 {
     public function editHotel($hotelid, $hotelname, $city, $website){
-        $fileDestination = 'public/uploads/'.$hotelid.'/';
+        $fileDestination = 'public/uploads/'.$hotelid;
         $files = File::files($fileDestination);
-        
+
+        if(File::exists('public/uploads/'.$hotelid.'/thumb/'.$hotelid.'__thumbnail'.'.jpg')){
+            $thumb = 'public/uploads/'.$hotelid.'/thumb/'.$hotelid.'__thumbnail'.'.jpg';
+        } else { 
+            $thumb ='public/uploads/No_Image_Available.png';
+        }
+
     	// $images = json_decode($this->getImages($hotelid));
-    	return view('hotel.editHotel', ['hotelid'=>$hotelid,
+    	return view('hotel.hotelImages', ['hotelid'=>$hotelid,
     									'hotelname'=>$hotelname,
     									'city'=>$city,
-    									'website'=>$website])
+    									'website'=>$website,
+                                        'thumb'=>$thumb])
     				->with('images', $files);
     }
 
