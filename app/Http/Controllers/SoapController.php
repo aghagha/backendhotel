@@ -43,6 +43,13 @@ class SoapController extends Controller
         return;
     }
 
+    public function test(Request $request){
+        $a['keyword']=$request->input('keyword');
+        $a['startdate']=$request->input('startdate');
+
+        var_dump($a);
+    }
+
     public function mainService(){
         $GLOBALS['servicewsdl'] = 'https://b2b.haryonotours.co.id:443/apiv1-dev/index.php/webservice?wsdl';
 
@@ -128,14 +135,14 @@ class SoapController extends Controller
         return view('hotel.listHotel', ['hotels'=>$GLOBALS['hotels'], 'parameters'=>$parameters]);
     }
 
-    public function gethotelsbase(){
+    public function gethotelsbase($keyword, $startdate, $enddate){
 
         $this->login();
 
         $parameters = [
-            'keyword'   => Input::get('keyword'),
-            'startdate' => Input::get('startdate'),
-            'enddate'   => Input::get('enddate')
+            'keyword'   => $keyword,
+            'startdate' => $startdate,
+            'enddate'   => $enddate
         ];
 
         $mainservicedata = [
@@ -185,17 +192,25 @@ class SoapController extends Controller
         return $parameters;
     }
     
-    public function gethotels(){
-        $parameters = $this->gethotelsbase();
+    public function gethotels(Request $request){
+        $parameters = $this->gethotelsbase($request->input('keyword'), $request->input('startdate'), $request->input('enddate'));
         
         return view('hotel.listHotel', ['hotels'=>$GLOBALS['hotels'], 'parameters'=>$parameters ]);
     }
 
-    public function gethotelsmobile(){
-        $parameters = $this->gethotelsbase();
+    public function gethotelsmobileOLD(){
+        $parameters = $this->gethotelsbase($request->input('keyword'), $request->input('startdate'), $request->input('enddate'));
         $outputs['hotels']=$GLOBALS['hotels'];
         $outputs['parameters']=$parameters;
-        
+
+        return json_encode($outputs);
+    }
+
+    public function gethotelsmobile(Request $request){
+        $parameters = $this->gethotelsbase($request->input('keyword'), $request->input('startdate'), $request->input('enddate'));
+        $outputs['hotels']=$GLOBALS['hotels'];
+        $outputs['parameters']=$parameters;
+
         return json_encode($outputs);
     }
 
@@ -262,5 +277,7 @@ class SoapController extends Controller
                                         'agentid'=>$GLOBALS['agentid']]);
     }   
 
-
+    public function getToken(){
+        return Response::json(['token'=>csrf_token()]);
+    }
 }

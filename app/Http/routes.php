@@ -37,6 +37,8 @@ Route::get('hotel/getroom/{hotelid}/{stardate}/{enddate}',
 
 Route::post('hotel/sellroom',
 	['as'=>'hotel.sellroom', 'uses'=>'SoapController@sellRoom']);
+Route::get('test',
+	['as'=>'test','uses'=>'SoapController@test']);
 // Route::get('images', function(){
 // 	return view('hotel.hotelImages');
 // });
