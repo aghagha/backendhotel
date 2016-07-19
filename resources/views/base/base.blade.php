@@ -8,6 +8,7 @@
         <div>
             @yield('content')
         </div>
+        @extends('base.script')
         @yield('moreScripts')
     </body>
 </html>
