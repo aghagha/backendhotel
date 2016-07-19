@@ -26,6 +26,17 @@ Route::post('hotel/upload',
 Route::get('hotel/images/{hotelid}/{hotelname}/{city}/{website}', 
 	['as' => 'hotel.images', 'uses'=>'HotelController@editHotel']);
 
+Route::post('hotel/search', 
+	['as'=>'search', 'uses' => 'SoapController@gethotels']);
+
+Route::post('hotel/m/search', 
+	['as'=>'mobilesearch','uses'=>'SoapController@gethotelsmobile']);
+
+Route::get('hotel/getroom/{hotelid}/{stardate}/{enddate}', 
+	['as'=> 'hotel.getroom', 'uses'=>'SoapController@getRoomAvailability']);
+
+Route::post('hotel/sellroom',
+	['as'=>'hotel.sellroom', 'uses'=>'SoapController@sellRoom']);
 // Route::get('images', function(){
 // 	return view('hotel.hotelImages');
 // });
@@ -37,14 +48,5 @@ Route::get('hotel/images/{hotelid}/{hotelname}/{city}/{website}',
 // Route::get('mobilesearch/{keyword?}/{stardate?}/{enddate?}', ['as' => 'mobile.index', 'uses' => 'SoapController@index']);
 
 
-Route::get('hotel/getroom/{hotelid}/{stardate}/{enddate}', 
-	['as'=> 'hotel.getroom', 'uses'=>'SoapController@getRoomAvailability']);
-Route::post('hotel/sellroom',
-	['as'=>'hotel.sellroom', 'uses'=>'SoapController@sellRoom']);
-
-Route::post('hotel/search', 
-	['as'=>'search', 'uses' => 'SoapController@gethotels']);
 
 
-Route::post('hotel/m/search', 
-	['as'=>'mobilesearch','uses'=>'SoapController@gethotelsmobile']);

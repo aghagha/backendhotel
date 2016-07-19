@@ -136,14 +136,14 @@
                           <td> {{$hotel->address}} </td>
                           <td> {{$hotel->phone}} </td>
                           <td> {{$hotel->website}} </td>
-                          <td><button class="btn btn-xs btn-warning"><a href="#myModal{{$hotel->hotelid}}" data-toggle="modal"><i class="fa fa-pencil"style="text-decoration:none"></i></a> </button></td>
-                          <td><button class="btb btn-xs btn"><a href="{{ route('hotel.images', ['hotelid'  =>$hotel->hotelid, 
-                                                                                                'hotelname' =>$hotel->hotelname,
-                                                                                                'city'    =>$hotel->city,
-                                                                                                'website' =>$hotel->website]) }}"><i class="fa fa-camera"></i></a></button></td>
-                          <td><button class="btn btn-xs"><a href="{{ route('hotel.getroom', ['hotelid'=>$hotel->hotelid,
-                                                                                                        'stardate'=>$parameters['startdate'],
-                                                                                                        'enddate'=>$parameters['enddate']]) }}"><i class="fa fa-home"></i></a> </button></td>
+                          <td><a href="#myModal{{$hotel->hotelid}}" data-toggle="modal"><i class="fa fa-pencil"style="text-decoration:none"></i></a></td>
+                          <td><a href="{{ route('hotel.images', ['hotelid'  =>$hotel->hotelid, 
+                                                                'hotelname' =>$hotel->hotelname,
+                                                                'city'    =>$hotel->city,
+                                                                'website' =>$hotel->website]) }}"><i class="fa fa-camera"></i></a></td>
+                          <td><a href="{{ route('hotel.getroom', ['hotelid'=>$hotel->hotelid,
+                                                                  'stardate'=>$parameters['startdate'],
+                                                                  'enddate'=>$parameters['enddate']]) }}"><i class="fa fa-home"></i></a></td>
                     <!-- Modal -->
                           <div id="myModal{{$hotel->hotelid}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">

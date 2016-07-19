@@ -39,7 +39,7 @@
                 <div class="widget-head">
                   <div class="pull-left">
                     <h2>
-                      {{$rooms->hotel->hotelname}} Rooms
+                      Add Guest to Room
                     </h2>
                   </div>
                   <div class="widget-icons pull-right">
@@ -50,42 +50,23 @@
                 </div>
                 <div class="widget-content">
                   <div class="padd">
-                    <div>
-						@foreach($rooms->rates as $roomrate )
-                Ratecode: {{ $roomrate->ratecode }}<br>
-                No cancel: {{ $roomrate->nocancel }}<br>
-                Promo: {{ $roomrate->promo }}<br>
-                Rooms:
-              <table class="table table-striped table-bordered table-hover">
-                <thead>
-                  <th>Nama kamar</th>
-                  <th>Harga</th>
-                  <th>Discount</th>
-                  <th>Kuota</th>
-                  <th>Pesan</th>
-                </thead>
-                <tbody>
-  							@foreach($roomrate->rooms as $room)
-                  <td>{{ $room->roomname }}</td>
-                  <td>{{ $room->pricecurrency }} {{ $room->sellprice }}</td>
-                  <td>{{ $room->discount }}</td>
-                  <td>{{ $room->allotment }}</td>
-                  <td>{!! Form::open(array('url'=>'hotel/sellroom', 'method'=>'POST', 'class'=>'table-inline')) !!}
-                        <div class="form-group">
-                          {{ Form::text('quantity', '', array('placeholder'=>'Quantity', 'class'=>'form-control')) }}
-                        </div>
-                        {{ Form::hidden('roomsellcode', $room->roomsellcode ) }}
-                        {{ Form::hidden('signature', $signature) }}
-                        <div class="form-group">
-                          {{ Form::hidden('agentid', $agentid) }}
-                          {{ Form::submit('Pesan',array('class'=>'btn btn-primary')) }}  
-                        </div>
-                      {!! Form::close() !!}</td>
-  							@endforeach
-                </tbody>
-              </table>
-						@endforeach
-					</div>
+                    {{Form::open(array('url'=>'xxxxx', 'method'=>'POST'))}}
+                      {{Form::hidden('signature',$output['signature'])}}
+                      {{Form::hidden('agentid',$output['agentid'])}}
+                      {{Form::hidden('startdate',$output['startdate'])}}
+                      {{Form::hidden('enddate',$output['enddate'])}}
+                      {{Form::hidden('foreign',$output['foreign'])}}
+                      {{$reservationdata=$output->reservationdata[0]}}
+                      {{Form::hidden('roomguests['sellkey']',$reservationdata->roomsellcode)}}
+                      {{Form::hidden('roomguests['guestname']','',array('class'=>'form-control'))}}
+                      {{Form::hidden('roomguests['guesttitle']','',array('class'=>'form-control'))}}
+                      @foreach($output->specialrequests)
+                        {{Form::checkbox('guestrequests'.$specialrequests->requestcode,$specialrequests->requestcode)}}$specialrequests->requestdesc
+                        @if($specialrequests->noteadditional == '1')
+                          {{Form::text('additionaltext'.$specialrequests->requestcode)}}
+                        @endif
+                      @endforeach
+                    {{Form::close()}}
                   </div>
                 </div>
               </div> 

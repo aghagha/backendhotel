@@ -193,9 +193,9 @@ class SoapController extends Controller
 
     public function gethotelsmobile(){
         $parameters = $this->gethotelsbase();
-
         $outputs['hotels']=$GLOBALS['hotels'];
         $outputs['parameters']=$parameters;
+        
         return json_encode($outputs);
     }
 
@@ -223,7 +223,6 @@ class SoapController extends Controller
 
     public function sellRoom(){
         $this->mainService();
-        // var_dump(Input::all());
 
         $signature = Input::get('signature');
         $agentid = Input::get('agentid');
@@ -258,19 +257,10 @@ class SoapController extends Controller
             $GLOBALS['output'] = $service->call('sellroom', [$data]);
         });
 
-        var_dump($GLOBALS['output']);
+        return view('hotel.addHotelGuest',['output'=>$GLOBALS['output'],
+                                        'signature'=>$GLOBALS['signature'],
+                                        'agentid'=>$GLOBALS['agentid']]);
     }   
-
-    public function mobileSearch($keyword = null, $startdate = null, $enddate = null){
-        $this->login();
-        if(!$keyword)
-            $keyword = '';
-        if(!$startdate)
-            $startdate = Carbon::now('Asia/Jakarta')->toDateString();
-        if(!$enddate)
-            $enddate = Carbon::tomorrow('Asia/Jakarta')->toDateString();
-        
-    }
 
 
 }
