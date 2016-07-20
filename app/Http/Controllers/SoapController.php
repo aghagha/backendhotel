@@ -273,11 +273,12 @@ class SoapController extends Controller
         });
 
         return view('hotel.addHotelGuest',['output'=>$GLOBALS['output'],
-                                        'signature'=>$GLOBALS['signature'],
-                                        'agentid'=>$GLOBALS['agentid']]);
+                                        'signature'=>$signature,
+                                        'agentid'=>$agentid]);
     }   
 
     public function getToken(){
         return Response::json(['token'=>csrf_token()]);
     }
 }
+

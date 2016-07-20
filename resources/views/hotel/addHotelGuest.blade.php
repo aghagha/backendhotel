@@ -51,19 +51,20 @@
                 <div class="widget-content">
                   <div class="padd">
                     {{Form::open(array('url'=>'xxxxx', 'method'=>'POST'))}}
-                      {{Form::hidden('signature',$output['signature'])}}
-                      {{Form::hidden('agentid',$output['agentid'])}}
-                      {{Form::hidden('startdate',$output['startdate'])}}
-                      {{Form::hidden('enddate',$output['enddate'])}}
-                      {{Form::hidden('foreign',$output['foreign'])}}
-                      {{$reservationdata=$output->reservationdata[0]}}
-                      {{Form::hidden('roomguests['sellkey']',$reservationdata->roomsellcode)}}
-                      {{Form::hidden('roomguests['guestname']','',array('class'=>'form-control'))}}
-                      {{Form::hidden('roomguests['guesttitle']','',array('class'=>'form-control'))}}
-                      @foreach($output->specialrequests)
-                        {{Form::checkbox('guestrequests'.$specialrequests->requestcode,$specialrequests->requestcode)}}$specialrequests->requestdesc
-                        @if($specialrequests->noteadditional == '1')
-                          {{Form::text('additionaltext'.$specialrequests->requestcode)}}
+                      {{Form::hidden('signature',$signature)}}
+                      {{Form::hidden('agentid',$agentid)}}
+                      {{Form::hidden('startdate',$output->startdate)}}
+                      {{Form::hidden('enddate',$output->enddate)}}
+                      {{Form::hidden('foreign',$output->foreign)}}
+                      {{Form::hidden('sellkey',$output->reservationdata[0]->roomsellcode)}}
+                      <label class="form-label">Nama Tamu</label>
+                      {{Form::text('guestname','',array('class'=>'form-control'))}}
+                      <label class="form-label">Nama Tamu</label>
+                      {{Form::text('guesttitle','',array('class'=>'form-control'))}}
+                      @foreach($output->specialrequests as $specialrequest)
+                        {{Form::checkbox('guestrequests'.$specialrequest->requestcode,$specialrequest->requestcode) }}{{$specialrequest->requestdesc}}
+                        @if($specialrequest->needaditional == '1')
+                          {{Form::text('additionaltext'.$specialrequest->requestcode)}}
                         @endif
                       @endforeach
                     {{Form::close()}}
