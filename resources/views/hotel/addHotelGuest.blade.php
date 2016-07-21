@@ -58,32 +58,30 @@
                       {{Form::hidden('startdate',$output->startdate)}}
                       {{Form::hidden('enddate',$output->enddate)}}
                       {{Form::hidden('foreign',$output->foreign)}}
-                      {{Form::hidden('sellkey',$output->reservationdata[0]->roomsellcode)}}
+                      @foreach($output->reservationdata as $rd)
+                        {{Form::hidden('sellkey[]',$rd->roomsellcode)}}
+                      @endforeach
                       <div class="form-group">
-                        <label class="form-label">Nama Tamu</label>
+                        <label class="form-label">Nama</label>
                         {{Form::text('guestname','',array('class'=>'form-control', 'placeholder'=>'Nama tamu'))}}
                       </div>
                       <div class="form-group">
-                        <label class="form-label">Gelar</label>
-                        {{Form::text('guesttitle','',array('class'=>'form-control', 'placeholder'=>'Tn. / Ny. / Sdr/i'))}}   
+                        <label class="form-label">Titel</label>
+                        {{ Form::select('guesttitle', ['Tn.', 'Ny.'], array('class'=>'form-control')) }}
                       </div>
                       <div class="form-group">
-                        <label class="form-label">Request tambahan</label>
-                        <?php $i=0; ?>
-                        @foreach($output->specialrequests as $specialrequest)
-                          <div class="form-group">
-                            <?php $i++ ?>
-                            {{Form::checkbox('guestrequests'.$specialrequest->requestcode,$specialrequest->requestcode) }} {{$specialrequest->requestdesc}}<br>
-                            {{Form::hidden('requestredesc'.$specialrequest->requestcode,$specialrequest->requestdesc)}}
-                            @if($specialrequest->needaditional == '1')
-                              {{Form::text('additionaltext'.$specialrequest->requestcode,'',array('placeholder'=>'Catatan tambahan','class'=>'form-control'))}}
-                            @endif
-                          </div>
+                        <label class="form-label">Special request</label>
+                        <br>
+                        @foreach($output->specialrequests as $sr)
+                          {{ Form::checkbox('specialrequests[]', $sr->requestcode,array('class'=>'form-control')) }} {{ $sr->requestdesc }}
+                          @if($sr->needaditional == '1')
+                            {{Form::text('additionaltext','',array('placeholder'=>'Catatan tambahan','class'=>'form-control'))}}
+                          @endif
+                          <br>
                         @endforeach
                       </div>
-                      {{ Form::hidden('nrequest',$i) }}
-                      {{ Form::submit('Tambahkan',array('class'=>'btn btn-primary')) }}
-                    {{Form::close()}}
+                      {{ Form::submit('Tambahkan',array('class'=>'btn btn-block btn-primary')) }}
+                    {{ Form::close() }}
                   </div>
                 </div>
               </div> 

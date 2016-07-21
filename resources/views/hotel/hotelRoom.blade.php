@@ -48,44 +48,47 @@
                   </div> 
                   <div class="clearfix"></div>
                 </div>
+                <div class="row">
+                </div>
                 <div class="widget-content">
                   <div class="padd">
                     <div>
-						@foreach($rooms->rates as $roomrate )
-                Ratecode: {{ $roomrate->ratecode }}<br>
-                No cancel: {{ $roomrate->nocancel }}<br>
-                Promo: {{ $roomrate->promo }}<br>
-                Rooms:
-              <table class="table table-striped table-bordered table-hover">
-                <thead>
-                  <th>Nama kamar</th>
-                  <th>Harga</th>
-                  <th>Discount</th>
-                  <th>Kuota</th>
-                  <th>Pesan</th>
-                </thead>
-                <tbody>
-  							@foreach($roomrate->rooms as $room)
-                  <td>{{ $room->roomname }}</td>
-                  <td>{{ $room->pricecurrency }} {{ $room->sellprice }}</td>
-                  <td>{{ $room->discount }}</td>
-                  <td>{{ $room->allotment }}</td>
-                  <td>{!! Form::open(array('url'=>'hotel/sellroom', 'method'=>'POST', 'class'=>'form-inline')) !!}
-                        <div class="form-group">
-                          {{ Form::text('quantity', '', array('placeholder'=>'Quantity', 'class'=>'form-control')) }}
-                        </div>
-                        {{ Form::hidden('roomsellcode', $room->roomsellcode ) }}
+                      {!! Form::open(array('url'=>'hotel/sellroom', 'method'=>'POST')) !!}
+          						@foreach($rooms->rates as $roomrate )
+                          <br>
+                          
+                          <h5>
+                            <h4><strong>Ratecode: {{ $roomrate->ratecode }}</strong></h4>
+                            No cancel: {{ $roomrate->nocancel }}<br>
+                            Promo: {{ $roomrate->promo }}<br>
+                            Rooms:
+                          </h5>
+                          
+                          @foreach($roomrate->rooms as $room)
+                            <p>
+                              <div class="row">
+                                <div class="col-md-5">
+                                  <h5><strong>{{ $room->roomname }}</strong></h5> <br>
+                                  {{ $room->pricecurrency }} {{ $room->sellprice }} <br>
+                                  disc. {{ $room->pricecurrency }} {{ $room->discount }}<br>
+                                  Ketersediaan kamar <strong>{{ $room->allotment }}</strong>
+                                  <hr>
+                                </div>
+                                <div class="col-md-1">
+                                  <?php $newrsc = explode('~', $room->roomsellcode);?>
+                                  {{ Form::number('quantity[]','0',array('class'=>'form-control number'))}}
+                                  {{ Form::hidden('roomsellcode[]', $room->roomsellcode ) }}
+                                </div>
+                              </div>
+                              
+                            </p>
+                          @endforeach
+          						@endforeach
                         {{ Form::hidden('signature', $signature) }}
-                        <div class="form-group">
-                          {{ Form::hidden('agentid', $agentid) }}
-                          {{ Form::submit('Pesan',array('class'=>'btn btn-primary')) }}  
-                        </div>
-                      {!! Form::close() !!}</td>
-  							@endforeach
-                </tbody>
-              </table>
-						@endforeach
-					</div>
+                        {{ Form::hidden('agentid', $agentid) }}
+                        <div class="row"><div class="col-md-6">{{ Form::submit('Pesan',array('class'=>'btn btn-block btn-primary')) }} </div></div>
+                      {!! Form::close() !!}
+          					</div>
                   </div>
                 </div>
               </div> 

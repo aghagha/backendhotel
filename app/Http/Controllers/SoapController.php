@@ -253,22 +253,20 @@ class SoapController extends Controller
 
         $signature = Input::get('signature');
         $agentid = Input::get('agentid');
-
-        $roomsellcode = Input::get('roomsellcode');
-        $breakdownroomsellcode = explode('~', $roomsellcode);
-        $hotelid = $breakdownroomsellcode[0];
-
-        $date = $breakdownroomsellcode[2];
-        $breakdowndate = explode(':', $date);
-        $startdate = $breakdowndate[0];
-        $enddate = $breakdowndate[1];
-
+        $i=0;
         $quantity = Input::get('quantity');
-
-        $roomsellkeys = array(0 => array('sellkey' => $roomsellcode,
-                                         'quantity' => $quantity ) );
-
-
+        foreach ($quantity as $q) {
+            if($q > 0){
+                $roomsellkeys[$i] = array('sellkey' => Input::get('roomsellcode')[$i] ,
+                                            'quantity' => $q) ;
+                $i++;
+            }
+        }
+        $sellkey = Input::get('roomsellcode');
+        $dates = explode(':',explode('~', end($sellkey))[2]);
+        $hotelid = explode('~', end($sellkey))[0];
+        $startdate = $dates[0];
+        $enddate = $dates[1];
         $data = [
             'signature' => $signature,
             'agentid' => $agentid,
@@ -279,11 +277,17 @@ class SoapController extends Controller
             'roomsellkeys' => $roomsellkeys,
             'quantity' => $quantity
         ];
+        
 
+        
         SoapWrapper::service('mainservice', function($service) use ($data){
             $GLOBALS['output'] = $service->call('sellroom', [$data]);
         });
 
+
+        // echo "<pre>";
+        // print_r($GLOBALS['output']);  
+        // echo "</pre>";
         return view('hotel.addHotelGuest',['output'=>$GLOBALS['output'],
                                         'signature'=>$signature,
                                         'agentid'=>$agentid]);
