@@ -37,6 +37,13 @@ Route::get('hotel/getroom/{hotelid}/{stardate}/{enddate}',
 
 Route::post('hotel/sellroom',
 	['as'=>'hotel.sellroom', 'uses'=>'SoapController@sellRoom']);
+
+Route::post('hotel/addguest',
+	['as'=>'hotel.addguest', 'uses'=>'SoapController@addGuest']);
+
+Route::post('hotel/commitbooking',
+	['as'=>'hotel.commitbooking','uses'=>'SoapController@commitBooking']);
+
 Route::get('test',
 	['as'=>'test','uses'=>'SoapController@test']);
 // Route::get('images', function(){

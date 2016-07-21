@@ -50,23 +50,39 @@
                 </div>
                 <div class="widget-content">
                   <div class="padd">
-                    {{Form::open(array('url'=>'xxxxx', 'method'=>'POST'))}}
+                    {{Form::open(array('url'=>'hotel/addguest', 'method'=>'POST'))}}
                       {{Form::hidden('signature',$signature)}}
+                      {{Form::hidden('reservationtoken',$output->reservationtoken)}}
                       {{Form::hidden('agentid',$agentid)}}
+                      {{Form::hidden('hotelid',$output->hotel->hotelid)}}
                       {{Form::hidden('startdate',$output->startdate)}}
                       {{Form::hidden('enddate',$output->enddate)}}
                       {{Form::hidden('foreign',$output->foreign)}}
                       {{Form::hidden('sellkey',$output->reservationdata[0]->roomsellcode)}}
-                      <label class="form-label">Nama Tamu</label>
-                      {{Form::text('guestname','',array('class'=>'form-control'))}}
-                      <label class="form-label">Nama Tamu</label>
-                      {{Form::text('guesttitle','',array('class'=>'form-control'))}}
-                      @foreach($output->specialrequests as $specialrequest)
-                        {{Form::checkbox('guestrequests'.$specialrequest->requestcode,$specialrequest->requestcode) }}{{$specialrequest->requestdesc}}
-                        @if($specialrequest->needaditional == '1')
-                          {{Form::text('additionaltext'.$specialrequest->requestcode)}}
-                        @endif
-                      @endforeach
+                      <div class="form-group">
+                        <label class="form-label">Nama Tamu</label>
+                        {{Form::text('guestname','',array('class'=>'form-control', 'placeholder'=>'Nama tamu'))}}
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Gelar</label>
+                        {{Form::text('guesttitle','',array('class'=>'form-control', 'placeholder'=>'Tn. / Ny. / Sdr/i'))}}   
+                      </div>
+                      <div class="form-group">
+                        <label class="form-label">Request tambahan</label>
+                        <?php $i=0; ?>
+                        @foreach($output->specialrequests as $specialrequest)
+                          <div class="form-group">
+                            <?php $i++ ?>
+                            {{Form::checkbox('guestrequests'.$specialrequest->requestcode,$specialrequest->requestcode) }} {{$specialrequest->requestdesc}}<br>
+                            {{Form::hidden('requestredesc'.$specialrequest->requestcode,$specialrequest->requestdesc)}}
+                            @if($specialrequest->needaditional == '1')
+                              {{Form::text('additionaltext'.$specialrequest->requestcode,'',array('placeholder'=>'Catatan tambahan','class'=>'form-control'))}}
+                            @endif
+                          </div>
+                        @endforeach
+                      </div>
+                      {{ Form::hidden('nrequest',$i) }}
+                      {{ Form::submit('Tambahkan',array('class'=>'btn btn-primary')) }}
                     {{Form::close()}}
                   </div>
                 </div>

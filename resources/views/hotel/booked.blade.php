@@ -39,7 +39,7 @@
                 <div class="widget-head">
                   <div class="pull-left">
                     <h2>
-                      {{$rooms->hotel->hotelname}} Rooms
+                      Commit Booking
                     </h2>
                   </div>
                   <div class="widget-icons pull-right">
@@ -49,43 +49,50 @@
                   <div class="clearfix"></div>
                 </div>
                 <div class="widget-content">
-                  <div class="padd">
-                    <div>
-						@foreach($rooms->rates as $roomrate )
-                Ratecode: {{ $roomrate->ratecode }}<br>
-                No cancel: {{ $roomrate->nocancel }}<br>
-                Promo: {{ $roomrate->promo }}<br>
-                Rooms:
-              <table class="table table-striped table-bordered table-hover">
-                <thead>
-                  <th>Nama kamar</th>
-                  <th>Harga</th>
-                  <th>Discount</th>
-                  <th>Kuota</th>
-                  <th>Pesan</th>
-                </thead>
-                <tbody>
-  							@foreach($roomrate->rooms as $room)
-                  <td>{{ $room->roomname }}</td>
-                  <td>{{ $room->pricecurrency }} {{ $room->sellprice }}</td>
-                  <td>{{ $room->discount }}</td>
-                  <td>{{ $room->allotment }}</td>
-                  <td>{!! Form::open(array('url'=>'hotel/sellroom', 'method'=>'POST', 'class'=>'form-inline')) !!}
-                        <div class="form-group">
-                          {{ Form::text('quantity', '', array('placeholder'=>'Quantity', 'class'=>'form-control')) }}
+                  <div class="padd invoice">
+                    <h3>Status Booking<strong class="red"> {{$output->bookingstatus}}</strong></h3>
+                    <hr>
+                    <h4>
+                      {{$output->hotel->hotelname}}<br>
+                      {{$output->hotel->city}}<br>
+                    </h4>
+                    <hr>
+                    <p>
+                      <div class="row">
+                        <div class="col-md-2">Booknumber</div>
+                        <div class="col-md-10">{{$output->bookingnumber}}</div>
+
+                        <div class="col-md-2">Checkin</div>
+                        <div class="col-md-10">{{$output->checkin}}</div>
+                        
+                        <div class="col-md-2">Checkout</div>
+                        <div class="col-md-10">{{$output->checkout}}</div>
+
+                        <div class="col-md-2">Waktu boook</div>
+                        <div class="col-md-10">{{$output->bookedtime}}</div>
+
+                        <div class="col-md-2">Pemesan</div>
+                        <div class="col-md-10">{{$output->bookedrooms[0]->guesttitle}} {{$output->bookedrooms[0]->guestname}}</div>
+                        
+                        <div class="col-md-2">Nama Kamar</div>
+                        <div class="col-md-10">{{$output->bookedrooms[0]->roomname}}</div>
+                        
+                        <div class="col-md-2">Jumlah</div>
+                        <div class="col-md-10">{{$output->bookedrooms[0]->quantity}}</div>
+
+                        <div class="col-md-2">Request tambahan</div>
+                        <div class="col-md-10">
+                          <?php $i = 1?>
+                          @foreach($output->bookedrooms[0]->specialrequests as $guestrequest)
+                            {{$i++}}. {{$guestrequest}}<br>
+                          @endforeach
                         </div>
-                        {{ Form::hidden('roomsellcode', $room->roomsellcode ) }}
-                        {{ Form::hidden('signature', $signature) }}
-                        <div class="form-group">
-                          {{ Form::hidden('agentid', $agentid) }}
-                          {{ Form::submit('Pesan',array('class'=>'btn btn-primary')) }}  
-                        </div>
-                      {!! Form::close() !!}</td>
-  							@endforeach
-                </tbody>
-              </table>
-						@endforeach
-					</div>
+
+                        <div class="col-md-2">Total pembayaran</div>
+                        <div class="col-md-10">{{$output->bookedrooms[0]->pricecurrency}} {{$output->bookedrooms[0]->subtotal}}</div>
+                      </div>
+                    </p>
+                   
                   </div>
                 </div>
               </div> 

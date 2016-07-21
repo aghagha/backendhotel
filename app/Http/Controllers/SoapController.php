@@ -50,6 +50,18 @@ class SoapController extends Controller
         var_dump($a);
     }
 
+    public function sessionService(){
+        $GLOBALS['sessionwsdl'] = 'https://b2b.haryonotours.co.id:443/apiv1-dev/index.php/sessionservice?wsdl';
+
+        SoapWrapper::add(function ($service) {
+            $service
+                ->name('session')
+                ->wsdl($GLOBALS['sessionwsdl']);
+        });
+
+        return;
+    }
+
     public function mainService(){
         $GLOBALS['servicewsdl'] = 'https://b2b.haryonotours.co.id:443/apiv1-dev/index.php/webservice?wsdl';
 
@@ -275,7 +287,80 @@ class SoapController extends Controller
         return view('hotel.addHotelGuest',['output'=>$GLOBALS['output'],
                                         'signature'=>$signature,
                                         'agentid'=>$agentid]);
-    }   
+    } 
+
+    public function addGuest(){
+        $this->mainService();
+
+        $roomguests[0]['sellkey']=Input::get('sellkey');
+        $roomguests[0]['guestname']=Input::get('guestname');
+        $roomguests[0]['guesttitle']=Input::get('guesttitle');
+        $j=0;
+        for($i=1;$i<=Input::get('nrequest');$i++){
+            if(Input::get('guestrequests'.$i) == $i){
+                $roomguests[0]['guestrequests'][$j]['requestid'] = Input::get('guestrequests'.$i);
+                $roomguests[0]['guestrequests'][$j]['requestdesc'] = Input::get('requestredesc'.$i);
+                $roomguests[0]['guestrequests'][$j]['additionaltext'] = Input::get('additionaltext'.$i);
+                $j++;
+            }
+        }
+        $sellkeys = Explode('~', Input::get('sellkey'));
+
+        $data = [
+            'signature' => Input::get('signature'),
+            'reservationtoken' => Input::get('reservationtoken'),
+            'agentid' => Input::get('agentid'),
+            'hotelid' => $sellkeys[0],
+            'startdate' => Input::get('startdate'),
+            'enddate' => Input::get('enddate'),
+            'foreign' => Input::get('foreign'),
+            'roomguests' => $roomguests
+        ];
+
+        SoapWrapper::service('mainservice', function($service) use ($data){
+            $GLOBALS['output'] = $service->call('addguest', [$data]);
+        });
+
+        // echo '<pre>';
+        // print_r($GLOBALS['output']);
+        // echo '</pre>';
+
+        return view('hotel.commitBooking',['output'=>$GLOBALS['output'],
+                                            'signature'=>Input::get('signature'),
+                                            'agentid'=>Input::get('agentid')]);
+    }  
+
+    public function commitBooking(){
+        $this->mainService();
+        
+        $commitsellkeys[0]['sellkey']=Input::get('sellkey');
+
+        $data = [
+            'signature' => Input::get('signature'),
+            'reservationtoken' => Input::get('reservationtoken'),
+            'agentid' => Input::get('agentid'),
+            'hotelid' => Input::get('hotelid'),
+            'startdate' => Input::get('startdate'),
+            'enddate' => Input::get('enddate'),
+            'foreign' => Input::get('foreign'),
+            'commitsellkeys' => $commitsellkeys
+        ];
+
+        SoapWrapper::service('mainservice', function($service) use ($data){
+            $GLOBALS['output'] = $service->call('commitbooking', [$data]);
+        });
+
+        $GLOBALS['signature'] = Input::get('signature');
+
+        $this->sessionService();
+        $this->logout();
+
+        // echo '<pre>';
+        // print_r($GLOBALS['output']);
+        // echo'</pre>';
+
+        return view('hotel.booked', ['output'=>$GLOBALS['output']]);
+    }
 
     public function getToken(){
         return Response::json(['token'=>csrf_token()]);
