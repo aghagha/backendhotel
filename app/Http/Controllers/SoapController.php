@@ -90,6 +90,7 @@ class SoapController extends Controller
         SoapWrapper::service('session', function ($service) use ($data) {
             // $curr_session['signature'] = 
             //var_dump($service->call('logout', [$data]));
+            $service->call('logout', [$data]);
         });
 
         return;
@@ -229,22 +230,6 @@ class SoapController extends Controller
                                         'parameters'=>$parameters ]);
     }
 
-    public function gethotelsmobileOLD(){
-        $parameters = $this->gethotelsbase($request->input('keyword'), $request->input('startdate'), $request->input('enddate'));
-        $outputs['hotels']=$GLOBALS['hotels'];
-        $outputs['parameters']=$parameters;
-
-        return json_encode($outputs);
-    }
-
-    public function gethotelsmobile(Request $request){
-        $parameters = $this->gethotelsbase($request->input('keyword'), $request->input('startdate'), $request->input('enddate'));
-        $outputs['hotels']=$GLOBALS['hotels'];
-        $outputs['parameters']=$parameters;
-
-        return json_encode($outputs);
-    }
-
     public function getRoomAvailability($hotelid, $startdate, $enddate){
         $this->declareWebService();
 
@@ -271,18 +256,6 @@ class SoapController extends Controller
         // return view('hotel.hotelRoom',['rooms'=>$GLOBALS['rooms'],
         //                                 'signature'=>$GLOBALS['signature'],
         //                                 'agentid'=>$GLOBALS['agentid']]);
-    }
-
-    public function getRoomAvailabilityMobile(){
-        $hotelid = Input::get('hotelid');
-        $startdate = Input::get('startdate');
-        $enddate = Input::get('enddate');
-        
-        $output = $this->getRoomAvailability($hotelid,$startdate,$enddate);
-        $output->signature = $GLOBALS['signature'];
-        $output->agentid = $GLOBALS['agentid'];
-
-        return json_encode($output);
     }
 
     public function sellRoom(){
@@ -322,21 +295,11 @@ class SoapController extends Controller
         });
 
         return $GLOBALS['output'];
-        // echo "<pre>";
-        // print_r($GLOBALS['output']);  
-        // echo "</pre>";
+        
         // return view('hotel.addHotelGuest',['output'=>$GLOBALS['output'],
-        //                                 'signature'=>$signature,
-        //                                 'agentid'=>$agentid]);
+                                        // 'signature'=>$signature,
+                                        // 'agentid'=>$agentid]);
     } 
-
-    public function sellRoomMobile(){
-        $output = $this->sellRoom();
-        $output->signature = Input::get('signature');
-        $output->agentid = Input::get('agentid');
-
-        return json_encode($output);
-    }
 
     public function addGuest(){
         $this->mainService();
@@ -368,20 +331,6 @@ class SoapController extends Controller
 
         $hotelid = explode('~', $sellkeys[0])[0];
 
-
-        // $roomguests[0]['sellkey']=Input::get('sellkey');
-        // $roomguests[0]['guestname']=Input::get('guestname');
-        // $roomguests[0]['guesttitle']=Input::get('guesttitle');
-        // $j=0;
-        // for($i=1;$i<=Input::get('nrequest');$i++){
-        //     if(Input::get('guestrequests'.$i) == $i){
-        //         $roomguests[0]['guestrequests'][$j]['requestid'] = Input::get('guestrequests'.$i);
-        //         $roomguests[0]['guestrequests'][$j]['requestdesc'] = Input::get('requestredesc'.$i);
-        //         $roomguests[0]['guestrequests'][$j]['additionaltext'] = Input::get('additionaltext'.$i);
-        //         $j++;
-        //     }
-        // }
-
         $data = [
             'signature' => Input::get('signature'),
             'reservationtoken' => Input::get('reservationtoken'),
@@ -393,26 +342,16 @@ class SoapController extends Controller
             'roomguests' => $roomguests
         ];
 
-        // echo '<pre>';
-        // print_r($data);
-        // echo '</pre>';
-
         SoapWrapper::service('mainservice', function($service) use ($data){
             $GLOBALS['output'] = $service->call('addguest', [$data]);
         });
 
-        return view('hotel.commitBooking',['output'=>$GLOBALS['output'],
-                                            'signature'=>Input::get('signature'),
-                                            'agentid'=>Input::get('agentid')]);
-    }  
+        return $GLOBALS['output'];
 
-    public function addGuestMobile(){
-        $output = $this->addGuest();
-        $output->signature = Input::get('signature');
-        $output->agentid = Input::get('agentid');
-
-        return json_encode($output);
-    }
+        // return view('hotel.commitBooking',['output'=>$GLOBALS['output'],
+                                            // 'signature'=>Input::get('signature'),
+                                            // 'agentid'=>Input::get('agentid')]);
+    }      
 
     public function commitBooking(){
         $this->mainService();
@@ -439,11 +378,51 @@ class SoapController extends Controller
         $this->sessionService();
         $this->logout();
 
-        // echo '<pre>';
-        // print_r($GLOBALS['output']);
-        // echo'</pre>';
+        return $GLOBALS['output'];
 
-        return view('hotel.booked', ['output'=>$GLOBALS['output']]);
+        // return view('hotel.booked', ['output'=>$GLOBALS['output']]);
+    }
+
+    public function gethotelsmobile(Request $request){
+        $parameters = $this->gethotelsbase($request->input('keyword'), $request->input('startdate'), $request->input('enddate'));
+        $outputs['hotels']=$GLOBALS['hotels'];
+        $outputs['parameters']=$parameters;
+
+        return json_encode($outputs);
+    }
+
+    public function getRoomAvailabilityMobile(){
+        $hotelid = Input::get('hotelid');
+        $startdate = Input::get('startdate');
+        $enddate = Input::get('enddate');
+        
+        $output = $this->getRoomAvailability($hotelid,$startdate,$enddate);
+        $output->signature = $GLOBALS['signature'];
+        $output->agentid = $GLOBALS['agentid'];
+
+        return json_encode($output);
+    }
+
+    public function sellRoomMobile(){
+        $output = $this->sellRoom();
+        $output->signature = Input::get('signature');
+        $output->agentid = Input::get('agentid');
+
+        return json_encode($output);
+    }
+
+    public function addGuestMobile(){
+        $output = $this->addGuest();
+        $output->signature = Input::get('signature');
+        $output->agentid = Input::get('agentid');
+
+        return json_encode($output);
+    }
+
+    public function commitBookingMobile(){
+        $output = $this->commitBooking();
+
+        return json_encode($output);
     }
 
     public function getToken(){

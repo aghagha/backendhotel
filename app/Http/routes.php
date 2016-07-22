@@ -53,6 +53,9 @@ Route::post('hotel/m/addguest',
 Route::post('hotel/commitbooking',
 	['as'=>'hotel.commitbooking','uses'=>'SoapController@commitBooking']);
 
+Route::post('hotel/m/commitbooking',
+	['as'=>'hotel.m.commitbooking','uses'=>'SoapController@commitBookingMobile']);
+
 Route::get('test',
 	['as'=>'test','uses'=>'SoapController@test']);
 // Route::get('images', function(){
