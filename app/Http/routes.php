@@ -35,11 +35,20 @@ Route::post('hotel/m/search',
 Route::get('hotel/getroom/{hotelid}/{stardate}/{enddate}', 
 	['as'=> 'hotel.getroom', 'uses'=>'SoapController@getRoomAvailability']);
 
+Route::post('hotel/m/getroom',
+	['as'=>'hotel.m.getroom', 'uses'=>'SoapController@getRoomAvailabilityMobile']);
+
 Route::post('hotel/sellroom',
 	['as'=>'hotel.sellroom', 'uses'=>'SoapController@sellRoom']);
 
+Route::post('hotel/m/sellroom',
+	['as'=>'hotel.m.sellroom', 'uses'=>'SoapController@sellRoomMobile']);
+
 Route::post('hotel/addguest',
 	['as'=>'hotel.addguest', 'uses'=>'SoapController@addGuest']);
+
+Route::post('hotel/m/addguest',
+	['as'=>'hotel.m.addguest', 'uses'=>'SoapController@addGuestMobile']);
 
 Route::post('hotel/commitbooking',
 	['as'=>'hotel.commitbooking','uses'=>'SoapController@commitBooking']);
