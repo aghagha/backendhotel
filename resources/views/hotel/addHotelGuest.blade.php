@@ -73,9 +73,10 @@
                         <label class="form-label">Special request</label>
                         <br>
                         @foreach($output->specialrequests as $sr)
-                          {{ Form::checkbox('specialrequests[]', $sr->requestcode,array('class'=>'form-control')) }} {{ $sr->requestdesc }}
+                          {{ Form::checkbox('specialrequests[]', $sr->requestcode,'',array('class'=>'form-control pull-left')) }} {{ $sr->requestdesc }}
+                          {{ Form::hidden('specialreqdesc[]',$sr->requestdesc)}}
                           @if($sr->needaditional == '1')
-                            {{Form::text('additionaltext','',array('placeholder'=>'Catatan tambahan','class'=>'form-control'))}}
+                            {{Form::text('additionaltext'.$sr->requestcode,'',array('placeholder'=>'Catatan tambahan','class'=>'form-control'))}}
                           @endif
                           <br>
                         @endforeach

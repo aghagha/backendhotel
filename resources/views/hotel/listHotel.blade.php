@@ -108,6 +108,7 @@
                                 </span>
                               </div>
                             </div>
+                            {{ Form::hidden('page','') }}
                             {{ Form::submit('Search',array('class'=>'btn btn-primary')) }}
                           {!! Form::close() !!}
                         </div>

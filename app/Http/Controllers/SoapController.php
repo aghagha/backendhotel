@@ -105,12 +105,6 @@ class SoapController extends Controller
         if(!$enddate)
             $enddate = Carbon::tomorrow('Asia/Jakarta')->toDateString();
 
-        $parameters = [
-            'keyword' => $keyword,
-            'startdate' => $startdate,
-            'enddate' => $enddate
-        ];
-
         $mainservicedata = [
             'signature' => $GLOBALS['signature'],
             'agentid'   => $GLOBALS['agentid'],
@@ -128,6 +122,19 @@ class SoapController extends Controller
             $GLOBALS['hotels'] = $service->call('search',[$mainservicedata]);
             // var_dump($service->getFunctions());
         });
+
+        $hotelcount = count($GLOBALS['hotels']->hotels);
+        if($hotelcount < 10)
+            $nextpage = 0;
+        else $nextpage = 1;
+
+        $parameters = [
+            'keyword' => $keyword,
+            'startdate' => $startdate,
+            'enddate' => $enddate,
+            'page'      => 1,
+            'nextpage'  => $nextpage
+        ];
 
         foreach ($GLOBALS['hotels']->hotels as $hotel ) {
             if(File::exists('public/uploads/'.$hotel->hotelid.'/thumb/'.$hotel->hotelid.'__thumbnail'.'.jpg')){
@@ -151,11 +158,9 @@ class SoapController extends Controller
 
         $this->login();
 
-        $parameters = [
-            'keyword'   => $keyword,
-            'startdate' => $startdate,
-            'enddate'   => $enddate
-        ];
+        if(Input::get('page') == '')
+            $page = '1';
+        else $page = Input::get('page');
 
         $mainservicedata = [
             'signature' => $GLOBALS['signature'],
@@ -166,7 +171,7 @@ class SoapController extends Controller
             'star'      => '',
             'price'     => '',
             'foreign'   => '',
-            'page'      => ''
+            'page'      => $page
         ];
 
         SoapWrapper::add(function ($service) {
@@ -185,6 +190,19 @@ class SoapController extends Controller
             }
         });
 
+        $hotelcount = count($GLOBALS['hotels']->hotels);
+        if($hotelcount < 10)
+            $nextpage = 0;
+        else $nextpage = 1;
+        
+        $parameters = [
+            'keyword'   => $keyword,
+            'startdate' => $startdate,
+            'enddate'   => $enddate,
+            'page'      => $page,
+            'nextpage'  => $nextpage
+        ];
+
         $this->logout();
 
         foreach ($GLOBALS['hotels']->hotels as $hotel ) {
@@ -200,14 +218,15 @@ class SoapController extends Controller
             
         }
 
-        // var_dump(json_encode($GLOBALS['hotels']));
         return $parameters;
+        // var_dump($parameters);
     }
     
     public function gethotels(Request $request){
         $parameters = $this->gethotelsbase($request->input('keyword'), $request->input('startdate'), $request->input('enddate'));
         
-        return view('hotel.listHotel', ['hotels'=>$GLOBALS['hotels'], 'parameters'=>$parameters ]);
+        return view('hotel.listHotel', ['hotels'=>$GLOBALS['hotels'], 
+                                        'parameters'=>$parameters ]);
     }
 
     public function gethotelsmobileOLD(){
@@ -296,30 +315,61 @@ class SoapController extends Controller
     public function addGuest(){
         $this->mainService();
 
-        $roomguests[0]['sellkey']=Input::get('sellkey');
-        $roomguests[0]['guestname']=Input::get('guestname');
-        $roomguests[0]['guesttitle']=Input::get('guesttitle');
-        $j=0;
-        for($i=1;$i<=Input::get('nrequest');$i++){
-            if(Input::get('guestrequests'.$i) == $i){
-                $roomguests[0]['guestrequests'][$j]['requestid'] = Input::get('guestrequests'.$i);
-                $roomguests[0]['guestrequests'][$j]['requestdesc'] = Input::get('requestredesc'.$i);
-                $roomguests[0]['guestrequests'][$j]['additionaltext'] = Input::get('additionaltext'.$i);
-                $j++;
+        $sellkeys = Input::get('sellkey');
+        $guestname = Input::get('guestname');
+        $guesttitle = Input::get('guesttitle');
+        $guestrequests = Input::get('specialrequests');
+
+        $i = 0;
+        foreach ($sellkeys as $s) {
+            $roomguests[$i]['sellkey'] = $s;
+            $roomguests[$i]['guestname'] = $guestname;
+            $roomguests[$i]['guesttitle'] = $guesttitle;
+            $j=0;
+            if($guestrequests !== null)
+                foreach ($guestrequests as $gr) {
+                    $roomguests[$i]['guestrequests'][$j]['requestid'] = $gr;
+                    $roomguests[$i]['guestrequests'][$j]['requestdesc'] = Input::get('specialreqdesc')[$gr-1];
+                    $roomguests[$i]['guestrequests'][$j++]['additionaltext'] = Input::get('additionaltext'.$gr);
+                }
+            else {
+                $roomguests[$i]['guestrequests'][0]['requestid']='';
+                $roomguests[$i]['guestrequests'][0]['requestdesc']='';
+                $roomguests[$i]['guestrequests'][0]['additionaltext']='';
             }
+            break;
         }
-        $sellkeys = Explode('~', Input::get('sellkey'));
+
+        $hotelid = explode('~', $sellkeys[0])[0];
+
+
+        // $roomguests[0]['sellkey']=Input::get('sellkey');
+        // $roomguests[0]['guestname']=Input::get('guestname');
+        // $roomguests[0]['guesttitle']=Input::get('guesttitle');
+        // $j=0;
+        // for($i=1;$i<=Input::get('nrequest');$i++){
+        //     if(Input::get('guestrequests'.$i) == $i){
+        //         $roomguests[0]['guestrequests'][$j]['requestid'] = Input::get('guestrequests'.$i);
+        //         $roomguests[0]['guestrequests'][$j]['requestdesc'] = Input::get('requestredesc'.$i);
+        //         $roomguests[0]['guestrequests'][$j]['additionaltext'] = Input::get('additionaltext'.$i);
+        //         $j++;
+        //     }
+        // }
 
         $data = [
             'signature' => Input::get('signature'),
             'reservationtoken' => Input::get('reservationtoken'),
             'agentid' => Input::get('agentid'),
-            'hotelid' => $sellkeys[0],
+            'hotelid' => $hotelid,
             'startdate' => Input::get('startdate'),
             'enddate' => Input::get('enddate'),
             'foreign' => Input::get('foreign'),
             'roomguests' => $roomguests
         ];
+
+        // echo '<pre>';
+        // print_r($data);
+        // echo '</pre>';
 
         SoapWrapper::service('mainservice', function($service) use ($data){
             $GLOBALS['output'] = $service->call('addguest', [$data]);
