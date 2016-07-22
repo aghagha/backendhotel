@@ -1,0 +1,61 @@
+search
+{
+    "hotelid":"9840",
+    "keyword":"Bali",
+    "startdate":"2016-07-22",
+    "enddate":"2016-07-23",
+    "page":""
+}
+
+getroom
+{
+    "hotelid":"",
+    "startdate":"2016-07-22",
+    "enddate":"2016-07-23",
+    "roomsellcode":[
+            {"sellkey":""},
+            {"quantity":"1"}
+    ],
+    "quantity":"1"
+}
+
+sellroom
+{
+    "signature":"",
+    "agentid":"3709",
+    "hotelid":"",
+    "startdate":"2016-07-22",
+    "enddate":"2016-07-23",
+    "foreign":"",
+    "quantity":["1"],
+    "roomsellcode":[""]   
+}
+
+addguest
+{
+    "signature":"",
+    "reservationtoken":"",
+    "agentid":"3709",
+    "hotelid":"9840",
+    "startdate":"2016-07-22",
+    "enddate":"2016-07-23",
+    "foreign":"",
+    "sellkey":["9840~24980~2016-07-22:2016-07-23~5119"],
+    "guestname":"Agha",
+    "guesttitle":"Tn.",
+    "specialrequests":["1","2"],
+    "specialreqdesc":["Room Only","Breakfast for","Kingsize Bed","Twin Bed","Smooking Room","Non-Smoking Room","Connectin Room","Extra Bed (payment by Haryono)","Other Special Request"],
+    "additionaltext2":"2"
+}
+
+commit booking
+{
+    "signature":"",
+    "reservationtoken":"",
+    "agentid":"3709",
+    "hotelid":"9840",
+    "startdate":"2016-07-22",
+    "enddate":"2016-07-23",
+    "foreign":"",
+    "sellkey":"9840~24980~2016-07-22:2016-07-23~5119"
+}

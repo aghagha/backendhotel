@@ -67,7 +67,7 @@
                       </div>
                       <div class="form-group">
                         <label class="form-label">Titel</label>
-                        {{ Form::select('guesttitle', ['Tn.', 'Ny.'], array('class'=>'form-control')) }}
+                        {{ Form::select('guesttitle', ['Tn.'=>'Tn.', 'Ny.'=>'Ny.'], array('class'=>'form-control')) }}
                       </div>
                       <div class="form-group">
                         <label class="form-label">Special request</label>

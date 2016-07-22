@@ -250,12 +250,12 @@ class SoapController extends Controller
         // echo "<pre>";
         // print_r($GLOBALS['rooms']);  
         // echo "</pre>";
-
+// 
         return $GLOBALS['rooms'];
 
         // return view('hotel.hotelRoom',['rooms'=>$GLOBALS['rooms'],
-        //                                 'signature'=>$GLOBALS['signature'],
-        //                                 'agentid'=>$GLOBALS['agentid']]);
+                                        // 'signature'=>$GLOBALS['signature'],
+                                        // 'agentid'=>$GLOBALS['agentid']]);
     }
 
     public function sellRoom(){
@@ -295,7 +295,7 @@ class SoapController extends Controller
         });
 
         return $GLOBALS['output'];
-        
+
         // return view('hotel.addHotelGuest',['output'=>$GLOBALS['output'],
                                         // 'signature'=>$signature,
                                         // 'agentid'=>$agentid]);
@@ -326,7 +326,7 @@ class SoapController extends Controller
                 $roomguests[$i]['guestrequests'][0]['requestdesc']='';
                 $roomguests[$i]['guestrequests'][0]['additionaltext']='';
             }
-            break;
+            break;//////ini buat banyak kamar
         }
 
         $hotelid = explode('~', $sellkeys[0])[0];
@@ -374,6 +374,10 @@ class SoapController extends Controller
         });
 
         $GLOBALS['signature'] = Input::get('signature');
+
+        echo '<pre>';
+        print_r($GLOBALS['output']);
+        echo '</pre>';
 
         $this->sessionService();
         $this->logout();
