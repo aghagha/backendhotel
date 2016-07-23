@@ -58,6 +58,9 @@ Route::post('hotel/m/commitbooking',
 
 Route::get('test',
 	['as'=>'test','uses'=>'SoapController@test']);
+
+Route::get('hotel/committed',
+	['as'=>'hotel.committed','uses'=>'SoapController@getCommit']);
 // Route::get('images', function(){
 // 	return view('hotel.hotelImages');
 // });

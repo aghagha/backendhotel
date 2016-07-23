@@ -20,6 +20,7 @@ class CreateTransaksihotel extends Migration
             $table->string('hotel');
             $table->string('kamar');
             $table->string('checkin');
+            $table->string('checkout');
             $table->string('totalharga');
             $table->string('status');
             $table->timestamps();

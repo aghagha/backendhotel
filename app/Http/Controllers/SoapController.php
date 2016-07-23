@@ -13,6 +13,8 @@ use File;
 
 use App\Http\Requests;
 
+use App\TransaksiHotel;
+
 class SoapController extends Controller
 {
     public function login(){
@@ -383,6 +385,25 @@ class SoapController extends Controller
         // return view('hotel.booked', ['output'=>$GLOBALS['output']]);
     }
 
+    public function storeCommit(){
+        $transaksihotel = new TransaksiHotel;
+        $transaksihotel->bookingnumber = '$bookingnumber';
+        $transaksihotel->booktime = '$booktime';
+        $transaksihotel->namatamu = '$namatamu';
+        $transaksihotel->hotel = '$hotel';
+        $transaksihotel->kamar = '$kamar';
+        $transaksihotel->checkin = '$checkin';
+        $transaksihotel->totalharga = '$totalharga';
+        $transaksihotel->status = '$status';
+        $transaksihotel->save();
+    }
+
+    public function getCommit(){
+        $transaksihotel = TransaksiHotel::all();
+
+        return json_encode($transaksihotel);
+    }
+
     public function gethotelsmobile(Request $request){
         $parameters = $this->gethotelsbase($request->input('keyword'), $request->input('startdate'), $request->input('enddate'));
         $outputs['hotels']=$GLOBALS['hotels'];
@@ -421,6 +442,7 @@ class SoapController extends Controller
 
     public function commitBookingMobile(){
         $output = $this->commitBooking();
+        $this->storeCommit();
 
         return json_encode($output);
     }

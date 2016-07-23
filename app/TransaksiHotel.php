@@ -7,4 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class TransaksiHotel extends Model
 {
     //
+    protected $table = 'transaksihotel';
+
 }
