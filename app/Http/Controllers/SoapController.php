@@ -442,7 +442,7 @@ class SoapController extends Controller
 
     public function commitBookingMobile(){
         $output = $this->commitBooking();
-        $this->storeCommit();
+        // $this->storeCommit();
 
         return json_encode($output);
     }
