@@ -375,10 +375,6 @@ class SoapController extends Controller
 
         $GLOBALS['signature'] = Input::get('signature');
 
-        echo '<pre>';
-        print_r($GLOBALS['output']);
-        echo '</pre>';
-
         $this->sessionService();
         $this->logout();
 

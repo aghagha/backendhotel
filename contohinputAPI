@@ -1,46 +1,212 @@
-search
+semua APInya pake method POST, I/O JSON
+contoh input cuma buat nunjukin struktur JSONnya, valuenya perlu diisi lagi sendiri
+output karena banyak, ada yang dari dokumentasi yang kemarin kukirim
+
+-==PROSES SEARCH==-
+daftar API:
+/hotel/m/search
+
+/hotel/m/search
+contoh input:
 {
-    "hotelid":"9840",
     "keyword":"Bali",
     "startdate":"2016-07-22",
     "enddate":"2016-07-23",
     "page":""
 }
 
-getroom
+output:
+satu object JSON 
 {
-    "hotelid":"",
-    "startdate":"2016-07-22",
-    "enddate":"2016-07-23",
-    "roomsellcode":[
-            {"sellkey":""},
-            {"quantity":"1"}
-    ],
-    "quantity":"1"
+    "hotels":{/*semua isi output di dokumen dokumentasi fungsi search*/},
+    "parameters": {
+                    "keyword": "Bali",
+                    "startdate": "2016-07-23",
+                    "enddate": "2016-07-24",
+                    "page": "1",
+                    "nextpage": "0"
+                  }
 }
 
-sellroom
+-----------------------------------------------------------------------------------------
+-==PROSES BOOKING==-
+daftar API
+/hotel/m/getroom
+/hotel/m/sellroom
+/hotel/m/addguest
+/hotel/m/commitbooking
+
+alur dari proses booking: getroom -> sellroom -> addguest -> commitbooking
+apabila ada salah satu yang salah di tengah, maka harus diulang dari awal, getroom
+
+
+
+------------------------------------------GETROOM
+/hotel/m/getroom
+------------------------------------------GETROOM - CONTOH INPUT
 {
-    "signature":"",
+    "hotelid":"10475",
+    "startdate":"2016-07-23",
+    "enddate":"2016-07-24"
+}
+
+------------------------------------------GETROOM - CONTOH OUTPUT //masing2 atribut bisa dilihat di dokumen kemarin buat deskripsinya
+{
+  "hotel": {
+    "hotelid": "10475",
+    "hotelname": "BLISS SURFER HOTEL [EX BLISS WAYAN]",
+    "address": "JL. SRIWIJAYA NO.88 LEGIAN KUTA",
+    "city": "BALI",
+    "phone": "0361 767 222",
+    "fax": "0361 762 100",
+    "email": "beta@haryono.co.id",
+    "star": "0",
+    "remarks": "Cancellation: Low = 15 days / high & peak = 22 days prior to arrival \nmax occupancy: 2 adults",
+    "website": "www.blissurferhotel.com",
+    "facilities": [],
+    "destinations": []
+  },
+  "startdate": "2016-07-23",
+  "enddate": "2016-07-24",
+  "foreign": "",
+  "rates": [
+    {
+      "ratecode": "24980",
+      "nocancel": "0",
+      "promo": "0",
+      "rooms": [
+        {
+          "roomsellcode": "9840~24980~2016-07-23:2016-07-24~5119",
+          "pricecurrency": "IDR",
+          "sellprice": "470000.00",
+          "discount": "0.00",
+          "roomname": "DELUXE",
+          "allotment": "5"
+        }
+      ]
+    }
+  ],
+  "ratedates": [
+    {
+      "code": "24980",
+      "startdate": "2016-07-23",
+      "enddate": "2016-07-24"
+    }
+  ],
+  "signature": "29094f9de3b584a199013d8228c1817ea37571301b48672faeddc8302c8fc0cfbe2db392",
+  "agentid": "3709"
+}
+
+------------------------------------------SELLROOM
+/hotel/m/sellroom
+------------------------------------------SELLROOM - CONTOH INPUT 
+{
+    "signature":"29094f9de3b584a199013d8228c1817ea37571301b48672faeddc8302c8fc0cfbe2db392",
     "agentid":"3709",
-    "hotelid":"",
-    "startdate":"2016-07-22",
-    "enddate":"2016-07-23",
+    "hotelid":"10475",
+    "startdate":"2016-07-23",
+    "enddate":"2016-07-24",
     "foreign":"",
     "quantity":["1"],
-    "roomsellcode":[""]   
+    "roomsellcode":["10475~22647~2016-07-23:2016-07-24~6971"]   
 }
 
-addguest
+------------------------------------------SELLROOM - CONTOH OUTPUT //masing2 atribut bisa dilihat di dokumen kemarin buat deskripsinya
 {
-    "signature":"",
-    "reservationtoken":"",
+  "startdate": "2016-07-23",
+  "enddate": "2016-07-24",
+  "foreign": "",
+  "reservationtoken": "cbbac1c6ccfaba0e867e4e4ed4b7d219",
+  "hotel": {
+    "hotelid": "9840",
+    "hotelname": "BLISS SURFER HOTEL [EX BLISS WAYAN]",
+    "address": "JL. SRIWIJAYA NO.88 LEGIAN KUTA",
+    "city": "BALI",
+    "phone": "0361 767 222",
+    "fax": "0361 762 100",
+    "email": "beta@haryono.co.id",
+    "star": "0",
+    "remarks": "Cancellation: Low = 15 days / high & peak = 22 days prior to arrival \nmax occupancy: 2 adults",
+    "website": "www.blissurferhotel.com"
+  },
+  "reservationdata": [
+    {
+      "roomsellcode": "10475~22647~2016-07-23:2016-07-24~6971",
+      "pricecurrency": "IDR",
+      "sellprice": "470000",
+      "discount": "12500",
+      "roomname": "DELUXE",
+      "quantity": "1",
+      "roomfacilities": [
+        {
+          "name": "Breakfast for 2"
+        }
+      ]
+    }
+  ],
+  "specialrequests": [
+    {
+      "requestcode": "1",
+      "requestdesc": "Room Only",
+      "needaditional": "0"
+    },
+    {
+      "requestcode": "2",
+      "requestdesc": "Breakfast for",
+      "needaditional": "1"
+    },
+    {
+      "requestcode": "3",
+      "requestdesc": "Kingsize Bed",
+      "needaditional": "0"
+    },
+    {
+      "requestcode": "4",
+      "requestdesc": "Twin Bed",
+      "needaditional": "0"
+    },
+    {
+      "requestcode": "5",
+      "requestdesc": "Smoking Room",
+      "needaditional": "0"
+    },
+    {
+      "requestcode": "6",
+      "requestdesc": "Non-Smoking Room",
+      "needaditional": "0"
+    },
+    {
+      "requestcode": "7",
+      "requestdesc": "Connecting Room",
+      "needaditional": "0"
+    },
+    {
+      "requestcode": "8",
+      "requestdesc": "Extra Bed (payment by Haryono)",
+      "needaditional": "0"
+    },
+    {
+      "requestcode": "9",
+      "requestdesc": "Other Special Request",
+      "needaditional": "1"
+    }
+  ],
+  "signature": "29094f9de3b584a199013d8228c1817ea37571301b48672faeddc8302c8fc0cfbe2db392",
+  "agentid": "3709"
+}
+
+------------------------------------------ADDGUEST
+/hotel/m/addguest
+------------------------------------------ADDGUEST - CONTOH INPUT 
+{
+    "signature":"29094f9de3b584a199013d8228c1817ea37571301b48672faeddc8302c8fc0cfbe2db392",
+    "reservationtoken":"cbbac1c6ccfaba0e867e4e4ed4b7d219",
     "agentid":"3709",
-    "hotelid":"9840",
-    "startdate":"2016-07-22",
-    "enddate":"2016-07-23",
+    "hotelid":"10475",
+    "startdate":"2016-07-23",
+    "enddate":"2016-07-24",
     "foreign":"",
-    "sellkey":["9840~24980~2016-07-22:2016-07-23~5119"],
+    "sellkey":["10475~22647~2016-07-23:2016-07-24~6971"],
     "guestname":"Agha",
     "guesttitle":"Tn.",
     "specialrequests":["1","2"],
@@ -48,14 +214,127 @@ addguest
     "additionaltext2":"2"
 }
 
-commit booking
+------------------------------------------ADDGUEST - CONTOH OUTPUT //masing2 atribut bisa dilihat di dokumen kemarin buat deskripsinya
 {
-    "signature":"",
-    "reservationtoken":"",
+  "startdate": "2016-07-23",
+  "enddate": "2016-07-24",
+  "foreign": "",
+  "reservationtoken": "cbbac1c6ccfaba0e867e4e4ed4b7d219",
+  "hotel": {
+    "hotelid": "10475",
+    "hotelname": "POP! TEBET",
+    "address": "JL. DR. SUPOMO NO. 29",
+    "city": "JAKARTA",
+    "phone": "021 8378 4280",
+    "fax": "021 8378 4281",
+    "email": "beta@haryono.co.id",
+    "star": "2",
+    "remarks": "NON SMOOKING ROOM",
+    "website": "www.pophotels.com"
+  },
+  "reservationdata": [
+    {
+      "roomsellcode": "10475~22647~2016-07-23:2016-07-24~6971",
+      "pricecurrency": "IDR",
+      "sellprice": "380000",
+      "discount": "12500",
+      "roomname": "POP! ROOM",
+      "quantity": "1",
+      "roomfacilities": [
+        {
+          "name": "Room Only"
+        }
+      ],
+      "guestname": "Agha",
+      "guesttitle": "Tn.",
+      "guestrequests": [
+        {
+          "requestdesc": "Room Only",
+          "additionaltext": ""
+        },
+        {
+          "requestdesc": "Breakfast for",
+          "additionaltext": "2"
+        }
+      ]
+    }
+  ],
+  "signature": "29094f9de3b584a199013d8228c1817ea37571301b48672faeddc8302c8fc0cfbe2db392",
+  "agentid": "3709"
+}
+
+------------------------------------------COMMITBOOKING
+/hotel/m/commitbooking
+------------------------------------------COMMITBOOKING - CONTOH INPUT 
+{
+    "signature":"29094f9de3b584a199013d8228c1817ea37571301b48672faeddc8302c8fc0cfbe2db392",
+    "reservationtoken":"cbbac1c6ccfaba0e867e4e4ed4b7d219",
     "agentid":"3709",
-    "hotelid":"9840",
-    "startdate":"2016-07-22",
-    "enddate":"2016-07-23",
+    "hotelid":"10475",
+    "startdate":"2016-07-23",
+    "enddate":"2016-07-24",
     "foreign":"",
-    "sellkey":"9840~24980~2016-07-22:2016-07-23~5119"
+    "sellkey":"10475~22647~2016-07-23:2016-07-24~6971"
+}
+
+------------------------------------------COMMITBOOKING - CONTOH OUTPUT //masing2 atribut bisa dilihat di dokumen kemarin buat deskripsinya
+{
+  "bookingnumber": "16000031",
+  "bookingstatus": "Confirmed",
+  "hotel": {
+    "hotelname": "POP! TEBET",
+    "address": "JL. DR. SUPOMO NO. 29",
+    "city": "JAKARTA",
+    "phone": "021 8378 4280",
+    "fax": "021 8378 4281",
+    "email": "beta@haryono.co.id",
+    "star": "2"
+  },
+  "agentdata": {
+    "agentid": "3709",
+    "name": "TEST KLIKPAY",
+    "contact": "",
+    "phone": "",
+    "address": "SURABAYA",
+    "email": null
+  },
+  "checkin": "2016-07-23",
+  "checkout": "2016-07-24",
+  "night": "1",
+  "bookedby": "testcomapi-Test API Client",
+  "bookedtime": "2016-07-23 15:21:22",
+  "canceledby": "-",
+  "canceledtime": null,
+  "confirmedby": "B2B System",
+  "confirmedtime": "2016-07-23 15:21:22",
+  "issuedby": "-",
+  "issuedtime": null,
+  "cutoffdate": null,
+  "cutofftime": null,
+  "allowcancel": "1",
+  "totalpayment": "367500.00",
+  "bookedrooms": [
+    {
+      "roomcode": null,
+      "roomname": "POP! ROOM",
+      "checkin": "2016-07-23",
+      "checkout": "2016-07-24",
+      "night": "1",
+      "quantity": "1",
+      "pricecurrency": "IDR",
+      "sellprice": "380000.00",
+      "discount": "12500.00",
+      "subtotal": "367500.00",
+      "guestname": "AGHA",
+      "guesttitle": "Tn.",
+      "facilities": [
+        "Room Only"
+      ],
+      "specialrequests": [
+        "Room Only",
+        "Breakfast for"
+      ],
+      "vouchercode": null
+    }
+  ]
 }
