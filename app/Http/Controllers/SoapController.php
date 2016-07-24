@@ -399,6 +399,24 @@ class SoapController extends Controller
         return json_encode($transaksihotel);
     }
 
+    public function getBooking($bookingnumber){
+        $this->declareWebService();
+
+        $data = [
+            'signature'=>$GLOBALS['signature'],
+            'agentid'=>$GLOBALS['agentid'],
+            'bookingnumber'=>$bookingnumber
+        ];
+
+        SoapWrapper::service('mainservice', function($service) use ($data){
+            $GLOBALS['output'] = $service->call('getbooking', [$data]);
+        });
+        // echo "<pre>";
+        // print_r($GLOBALS['output']);
+        // echo "</pre>";
+        return view('transaksi.bookingdetail',['detail'=>$GLOBALS['output']]);
+    }
+
     public function gethotelsmobile(Request $request){
         $parameters = $this->gethotelsbase($request->input('keyword'), $request->input('startdate'), $request->input('enddate'));
         $outputs['hotels']=$GLOBALS['hotels'];

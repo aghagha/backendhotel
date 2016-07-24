@@ -19,7 +19,7 @@
       
       <li class="has_sub <?php if($now == 'transaksi') echo 'open'; ?>"><a href="#"><i class="fa fa-bar-chart-o"></i> Transaksi Hotel <span class="pull-right"><i class="fa fa-chevron-right"></i></span></a>
         <ul>
-          <li><a href="">Daftar Booking</a></li>
+          <li><a href="{{ route('hotel.transaksihotel') }}">Daftar Booking</a></li>
           <li><a href="">Issued</a></li>
         </ul>
       </li>	

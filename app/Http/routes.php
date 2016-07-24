@@ -36,8 +36,10 @@ Route::post('hotel/addguest',
 	['as'=>'hotel.addguest', 'uses'=>'SoapController@addGuest']);
 Route::post('hotel/commitbooking',
 	['as'=>'hotel.commitbooking','uses'=>'SoapController@commitBooking']);
-Route::get('htoel/transaksi',
+Route::get('hotel/transaksi',
 	['as'=>'hotel.transaksihotel','uses'=>'TransaksiController@getTransaksi']);
+Route::get('hotel/getbooking/{bookingnumber}',
+	['as'=>'hotel.getbooking','uses'=>'SoapController@getBooking']);
 
 Route::post('hotel/m/search', 
 	['as'=>'mobilesearch','uses'=>'SoapController@gethotelsmobile']);
