@@ -5,12 +5,12 @@
 @section('content')
 
   <?php $now = 'hotel'; ?>
-  @extends('base.sidebar')
+  @include('base.navbar')
  
 
 
 <!-- Header starts -->
-  @extends('base.header')
+  @include('base.header')
 
 <!-- Header ends -->
 
@@ -19,7 +19,7 @@
 
 
     <!-- Sidebar -->
-    @extends('base.navbar')
+    @include('base.sidebar')
 
     <!-- Sidebar ends -->
 
@@ -58,7 +58,7 @@
               <div class="widget">
                 <div class="widget-head">
                   <div class="pull-left">
-                    Hotel Images
+                    <h2>Hotel Images</h2>
                   </div>
                   <div class="widget-icons pull-right">
                     <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a> 

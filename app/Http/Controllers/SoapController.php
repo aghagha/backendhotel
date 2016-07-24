@@ -232,7 +232,7 @@ class SoapController extends Controller
                                         'parameters'=>$parameters ]);
     }
 
-    public function getRoomAvailability($hotelid, $startdate, $enddate){
+    public function getRoomBase($hotelid, $startdate, $enddate){
         $this->declareWebService();
 
         $data = [
@@ -258,6 +258,14 @@ class SoapController extends Controller
         // return view('hotel.hotelRoom',['rooms'=>$GLOBALS['rooms'],
                                         // 'signature'=>$GLOBALS['signature'],
                                         // 'agentid'=>$GLOBALS['agentid']]);
+    }
+
+    public function getRoomAvailability($hotelid, $startdate, $enddate){
+        $this->getRoomBase($hotelid,$startdate,$enddate);
+
+        return view('hotel.hotelRoom',['rooms'=>$GLOBALS['rooms'],
+                                        'signature'=>$GLOBALS['signature'],
+                                        'agentid'=>$GLOBALS['agentid']]);
     }
 
     public function sellRoom(){
@@ -385,19 +393,6 @@ class SoapController extends Controller
         // return view('hotel.booked', ['output'=>$GLOBALS['output']]);
     }
 
-    public function storeCommit(){
-        $transaksihotel = new TransaksiHotel;
-        $transaksihotel->bookingnumber = '$bookingnumber';
-        $transaksihotel->booktime = '$booktime';
-        $transaksihotel->namatamu = '$namatamu';
-        $transaksihotel->hotel = '$hotel';
-        $transaksihotel->kamar = '$kamar';
-        $transaksihotel->checkin = '$checkin';
-        $transaksihotel->totalharga = '$totalharga';
-        $transaksihotel->status = '$status';
-        $transaksihotel->save();
-    }
-
     public function getCommit(){
         $transaksihotel = TransaksiHotel::all();
 
@@ -417,7 +412,7 @@ class SoapController extends Controller
         $startdate = Input::get('startdate');
         $enddate = Input::get('enddate');
         
-        $output = $this->getRoomAvailability($hotelid,$startdate,$enddate);
+        $output = $this->getRoomBase($hotelid,$startdate,$enddate);
         $output->signature = $GLOBALS['signature'];
         $output->agentid = $GLOBALS['agentid'];
 
@@ -442,9 +437,34 @@ class SoapController extends Controller
 
     public function commitBookingMobile(){
         $output = $this->commitBooking();
-        // $this->storeCommit();
+
+        //store to DB
+        $transaksihotel = new TransaksiHotel;
+        $transaksihotel->bookingnumber = $output->bookingnumber;
+        $transaksihotel->booktime = $output->bookedtime;
+        $transaksihotel->namatamu = $output->bookedrooms[0]->guesttitle.' '.$output->bookedrooms[0]->guestname;
+        $transaksihotel->hotel = $output->hotel->hotelname;
+        $transaksihotel->kamar = $output->bookedrooms[0]->roomname;
+        $transaksihotel->checkin = $output->checkin;
+        $transaksihotel->checkout = $output->checkout;
+        $transaksihotel->totalharga = $output->totalpayment;
+        $transaksihotel->status = $output->bookingstatus;
+        $transaksihotel->save();
 
         return json_encode($output);
+    }
+
+    public function storeCommit(){
+        $transaksihotel = new TransaksiHotel;
+        $transaksihotel->bookingnumber = '$bookingnumber';
+        $transaksihotel->booktime = '$booktime';
+        $transaksihotel->namatamu = '$namatamu';
+        $transaksihotel->hotel = '$hotel';
+        $transaksihotel->kamar = '$kamar';
+        $transaksihotel->checkin = '$checkin';
+        $transaksihotel->totalharga = '$totalharga';
+        $transaksihotel->status = '$status';
+        $transaksihotel->save();
     }
 
     public function getToken(){

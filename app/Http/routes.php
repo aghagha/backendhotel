@@ -19,48 +19,38 @@ Route::get('index', function () {
 
 Route::get('list', 
 	['as'=>'hotel.list', 'uses' => 'SoapController@index']);
-
 Route::post('hotel/upload', 
 	['as' => 'upload', 'uses' => 'UploadController@upload']);
-
 Route::get('hotel/images/{hotelid}/{hotelname}/{city}/{website}', 
 	['as' => 'hotel.images', 'uses'=>'HotelController@editHotel']);
 
 Route::post('hotel/search', 
 	['as'=>'search', 'uses' => 'SoapController@gethotels']);
+Route::get('hotel/committed',
+	['as'=>'hotel.committed','uses'=>'SoapController@getCommit']);
+Route::get('hotel/getroom/{hotelid}/{stardate}/{enddate}', 
+	['as'=> 'hotel.getroom', 'uses'=>'SoapController@getRoomAvailability']);
+Route::post('hotel/sellroom',
+	['as'=>'hotel.sellroom', 'uses'=>'SoapController@sellRoom']);
+Route::post('hotel/addguest',
+	['as'=>'hotel.addguest', 'uses'=>'SoapController@addGuest']);
+Route::post('hotel/commitbooking',
+	['as'=>'hotel.commitbooking','uses'=>'SoapController@commitBooking']);
+Route::get('htoel/transaksi',
+	['as'=>'hotel.transaksihotel','uses'=>'TransaksiController@getTransaksi']);
 
 Route::post('hotel/m/search', 
 	['as'=>'mobilesearch','uses'=>'SoapController@gethotelsmobile']);
-
-Route::get('hotel/getroom/{hotelid}/{stardate}/{enddate}', 
-	['as'=> 'hotel.getroom', 'uses'=>'SoapController@getRoomAvailability']);
-
 Route::post('hotel/m/getroom',
 	['as'=>'hotel.m.getroom', 'uses'=>'SoapController@getRoomAvailabilityMobile']);
-
-Route::post('hotel/sellroom',
-	['as'=>'hotel.sellroom', 'uses'=>'SoapController@sellRoom']);
-
 Route::post('hotel/m/sellroom',
 	['as'=>'hotel.m.sellroom', 'uses'=>'SoapController@sellRoomMobile']);
-
-Route::post('hotel/addguest',
-	['as'=>'hotel.addguest', 'uses'=>'SoapController@addGuest']);
-
 Route::post('hotel/m/addguest',
 	['as'=>'hotel.m.addguest', 'uses'=>'SoapController@addGuestMobile']);
-
-Route::post('hotel/commitbooking',
-	['as'=>'hotel.commitbooking','uses'=>'SoapController@commitBooking']);
-
 Route::post('hotel/m/commitbooking',
 	['as'=>'hotel.m.commitbooking','uses'=>'SoapController@commitBookingMobile']);
 
-Route::get('test',
-	['as'=>'test','uses'=>'SoapController@test']);
 
-Route::get('hotel/committed',
-	['as'=>'hotel.committed','uses'=>'SoapController@getCommit']);
 // Route::get('images', function(){
 // 	return view('hotel.hotelImages');
 // });

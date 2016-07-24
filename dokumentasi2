@@ -1,0 +1,16 @@
+jadi pertama kan dari hasil search dapet banyak hotel, itu punya hotelid masing2, yang nantinya bakal dipake di fungsi {getroom} buat ndapetin list kamar dari hotelnya.
+ohya sebelumnya getroom, sellroom, addguest, commit booking itu satu proses, jadi punya atribut {signature} yang sama, didapetin pas pertama kali {getroom}.
+1. getroom
+oke jadi pertama njalanin {getroom} bakal dapet semua informasi dari kamar2nya (nama, id, harga, dsb) ditambah sama {signature} sama {agentid}.{signature} bakal dipake di fungsi {selroom}, {agentid} itu idnya...agent, dalam hal ini kita (developer)
+2. sellroom
+fungsinya buat ngalokasiin jumlah kamar yang mau dibooking. dari hasil {getroom} tadi, dapet banyak informasi kamar kan juan, atribut {roomsellcode} dari tiap2 kamar bakal dipake jadi input ke {sellroom} dengan nama variabel {roomsellcode}, bentuknya array, tapi cuman bisa satu kamar dulu==satu {roomsellcode}. jangan lupa {signature} yang tadi didapet dari {getroom} juga dipake buat input di sini. nanti dari sini keluar informasi reservasi lagi, seperti {reservationtoken)-dipake buat fungsi {addguest} sama {commitbooking}. {specialrequests} itu buat addguest nanti.
+3. addguest
+nambahin data tamu ke kamar yang sudah di alokasikan tadi. data2 tamu dijadiin input, kayak contoh yang kukasih kemarin. {signature}, {reservationtoken} pake dari yang sudah didapet sebelumnya. nah {selkey} ini yang sebelumnya di {sellroom} namanya {roomsellcode}. outputnya itu cuman berisi data2 yang sebelumnya sudah diisikan
+4. commitbooking
+finalisasi dari proses reservasi kamar. begitu fungsi ini selesai, penyewa kamar harus membayar sebelum kamar yang direservasi tadi bisa sepenuhnya booked. inputnya jelas kok di contoh yang kemarin kukasih.
+
+semua contoh input sama output sudah aku kasih di dokumen(?) yang kemarin, yang aku ketikin sama pdfnya. 
+
+errors:
+- kalau responsenya 'Parameter eror' berati proses di antara getroom-sellroom-addguest-commitbooking ada yang gagal dan kudu di ulang dari {getroom}. 
+- kalau responsenya 'Trying to get non-object property' berati ada yang salah di inputnya, coba cek tanggalnya. paling gak startdate itu hari ini
