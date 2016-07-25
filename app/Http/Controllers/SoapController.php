@@ -10,6 +10,7 @@ use Input;
 use Validator;
 use Redirect;
 use File;
+use DB;
 
 use App\Http\Requests;
 
@@ -97,6 +98,22 @@ class SoapController extends Controller
 
         return;
     }    
+
+    public function dashboard(){
+        $transaksi = DB::table('transaksihotel')->get();
+        $count = count($transaksi);
+        $success = 0;
+        $omzet = 0;
+        foreach ($transaksi as $t) {
+            if($t->status == "Success")
+            {   
+                $success++;
+                $omzet+=$t->totalharga;
+            }
+        }
+
+        return view('hotel.index', ['count'=>$count, 'success'=>$success, 'omzet'=>$omzet]);
+    }
 
     public function index($keyword = null, $startdate = null, $enddate = null){
         $this->declareWebService();
@@ -457,17 +474,17 @@ class SoapController extends Controller
         $output = $this->commitBooking();
 
         //store to DB
-        $transaksihotel = new TransaksiHotel;
-        $transaksihotel->bookingnumber = $output->bookingnumber;
-        $transaksihotel->booktime = $output->bookedtime;
-        $transaksihotel->namatamu = $output->bookedrooms[0]->guesttitle.' '.$output->bookedrooms[0]->guestname;
-        $transaksihotel->hotel = $output->hotel->hotelname;
-        $transaksihotel->kamar = $output->bookedrooms[0]->roomname;
-        $transaksihotel->checkin = $output->checkin;
-        $transaksihotel->checkout = $output->checkout;
-        $transaksihotel->totalharga = $output->totalpayment;
-        $transaksihotel->status = $output->bookingstatus;
-        $transaksihotel->save();
+        // $transaksihotel = new TransaksiHotel;
+        // $transaksihotel->bookingnumber = $output->bookingnumber;
+        // $transaksihotel->booktime = $output->bookedtime;
+        // $transaksihotel->namatamu = $output->bookedrooms[0]->guesttitle.' '.$output->bookedrooms[0]->guestname;
+        // $transaksihotel->hotel = $output->hotel->hotelname;
+        // $transaksihotel->kamar = $output->bookedrooms[0]->roomname;
+        // $transaksihotel->checkin = $output->checkin;
+        // $transaksihotel->checkout = $output->checkout;
+        // $transaksihotel->totalharga = $output->totalpayment;
+        // $transaksihotel->status = $output->bookingstatus;
+        // $transaksihotel->save();
 
         return json_encode($output);
     }

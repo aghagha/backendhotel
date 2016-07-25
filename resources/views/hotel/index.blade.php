@@ -64,20 +64,16 @@
               <ul class="today-datas ">
                 <!-- List #1 --> 
                 <li>
-                  <div><span id="todayspark2" class="spark"></span></div>
-                  <div class="datas-text">45 Booking</div>
+                  <div class="datas-text">{{$count}} Booking</div>
                 </li>
                 <li>
-                  <div><span id="todayspark3" class="spark"></span></div>
-                  <div class="datas-text">30 Succes Transaction</div>
+                  <div class="datas-text">{{$success}} Succes Transaction</div>
                 </li>
                 <li>
-                  <div><span id="todayspark4" class="spark"></span></div>
-                  <div class="datas-text">3% Conversion</div>
+                  <div class="datas-text">0 Conversion</div>
                 </li>
                 <li>
-                  <div><span id="todayspark1" class="spark"></span></div>
-                  <div class="datas-text">Rp. 16,000,000.- Total Omzet</div>
+                  <div class="datas-text">{{$omzet}} Total Omzet</div>
                 </li>                                                                                                     
               </ul> 
             </div>

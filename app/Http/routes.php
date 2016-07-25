@@ -14,9 +14,7 @@
 	// ['as' => 'index', 'uses' => 'SoapController@index']);
 
 Route::get('/', 
-	['as'=>'index', 'uses'=> function () {
-    							return view('hotel.index');
-							}]);
+	['as'=>'index', 'uses'=> 'SoapController@dashboard']);
 
 Route::get('list', 
 	['as'=>'hotel.list', 'uses' => 'SoapController@index']);
