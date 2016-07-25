@@ -1,6 +1,6 @@
 @extends('base.base')
 
-@section('title', 'Kamar Hotel')
+@section('title', 'Transaksi Hotel - Daftar Booking')
 
 @section('content')
 <?php $now = 'transaksi'; ?>

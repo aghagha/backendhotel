@@ -1,6 +1,6 @@
 @extends('base.base')
 
-@section('title', 'Kamar Hotel')
+@section('title', "Manajemen Hotel - Kamar Hotel")
 
 @section('content')
 <?php $now = 'hotel'; ?>
@@ -14,7 +14,7 @@
   
       <!-- Page heading -->
       <div class="page-head">
-        <h2 class="pull-left"><i class="fa fa-home"></i> Dashboard</h2>
+        <h2 class="pull-left"><i class="fa fa-home"></i> Manajemen Hotel</h2>
 
                 <!-- Breadcrumb -->
                 <div class="bread-crumb pull-right">

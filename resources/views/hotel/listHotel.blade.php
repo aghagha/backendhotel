@@ -1,6 +1,6 @@
 @extends('base.base')
 
-@section('title', 'Beranda')
+@section('title', 'Manajemen Hotel - List Hotel')
 
 <!-- <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +17,7 @@
   <!-- Favicon -->
   <!-- <link rel="shortcut icon" href="img/favicon/favicon.png">
 </head> -->
-@inlcude('base.style')
+<!-- @inlcude('base.style') -->
 @section('content')
 
   <?php $now = 'hotel'; ?>
@@ -45,14 +45,6 @@
 	    <!-- Page heading -->
 	    <div class="page-head">
 	      <h2 class="pull-left"><i class="fa fa-home"></i> Daftar Hotel</h2>
-
-                <!-- Breadcrumb -->
-                <div class="bread-crumb pull-right">
-                  <a href="index.html"><i class="fa fa-home"></i> Admin</a> 
-                  <!-- Divider -->
-                  <span class="divider">/</span> 
-                  <a href="#" class="bread-current">Dashboard</a>
-                </div>
 
                 <div class="clearfix"></div>
 

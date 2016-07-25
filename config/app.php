@@ -158,6 +158,7 @@ return [
         'Artisaninweb\SoapWrapper\ServiceProvider',
         'Collective\Html\HtmlServiceProvider',
         Intervention\Image\ImageServiceProvider::class,
+        // 'PingpongModulesModulesServiceProvider',
     ],
 
     /*
@@ -208,6 +209,7 @@ return [
         'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',
         'Image' => Intervention\Image\Facades\Image::class,
+        // 'Module' => 'PingpongModulesFacadesModule',
     ],
 
 ];

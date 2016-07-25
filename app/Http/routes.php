@@ -10,12 +10,13 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-Route::get('/', 
-	['as' => 'index', 'uses' => 'SoapController@index']);
+// Route::get('/', 
+	// ['as' => 'index', 'uses' => 'SoapController@index']);
 
-Route::get('index', function () {
-    return view('hotel.index');
-});
+Route::get('/', 
+	['as'=>'index', 'uses'=> function () {
+    							return view('hotel.index');
+							}]);
 
 Route::get('list', 
 	['as'=>'hotel.list', 'uses' => 'SoapController@index']);
