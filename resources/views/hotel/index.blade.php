@@ -64,16 +64,16 @@
               <ul class="today-datas ">
                 <!-- List #1 --> 
                 <li>
-                  <div class="datas-text">{{$count}} Booking</div>
+                  <div class="datas-text"> Booking</div>
                 </li>
                 <li>
-                  <div class="datas-text">{{$success}} Succes Transaction</div>
+                  <div class="datas-text"> Succes Transaction</div>
                 </li>
                 <li>
                   <div class="datas-text">0 Conversion</div>
                 </li>
                 <li>
-                  <div class="datas-text">{{$omzet}} Total Omzet</div>
+                  <div class="datas-text"> Total Omzet</div>
                 </li>                                                                                                     
               </ul> 
             </div>

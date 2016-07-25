@@ -100,17 +100,17 @@ class SoapController extends Controller
     }    
 
     public function dashboard(){
-        $transaksi = DB::table('transaksihotel')->get();
-        $count = count($transaksi);
-        $success = 0;
-        $omzet = 0;
-        foreach ($transaksi as $t) {
-            if($t->status == "Success")
-            {   
-                $success++;
-                $omzet+=$t->totalharga;
-            }
-        }
+        // $transaksi = DB::table('transaksihotel')->get();
+        // $count = count($transaksi);
+        // $success = 0;
+        // $omzet = 0;
+        // foreach ($transaksi as $t) {
+        //     if($t->status == "Success")
+        //     {   
+        //         $success++;
+        //         $omzet+=$t->totalharga;
+        //     }
+        // }
 
         return view('hotel.index', ['count'=>$count, 'success'=>$success, 'omzet'=>$omzet]);
     }
